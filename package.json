@@ -14,8 +14,13 @@
 		"sidebar",
 		"workspace"
 	],
+	"homepage": "https://gitlab.com/fooxly/packages/workspace",
+	"repository": {
+		"type": "git",
+		"url": "https://gitlab.com/fooxly/packages/workspace.git"
+	},
 	"bugs": {
-		"url": "https://github.com/Fooxly/vscode-provision-bar/issues",
+		"url": "https://gitlab.com/fooxly/packages/workspace",
 		"email": "bugs@fooxly.com"
 	},
 	"galleryBanner": {
@@ -34,7 +39,71 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": []
+		"commands": [
+			{
+				"command": "workspace.focusFile",
+				"title": "Focus file"
+			},
+			{
+				"command": "workspace.removeFile",
+				"title": "Forget file"
+			},
+			{
+				"command": "workspace.focusFolder",
+				"title": "Focus folder"
+			},
+			{
+				"command": "workspace.removeFolder",
+				"title": "Forget folder"
+			},
+			{
+				"command": "workspace.toggleFocus",
+				"title": "Toggle workplace"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "workspace.toggleFocus",
+				"key": "ctrl+shift+K",
+				"mac": "cmd+shift+K"
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"when": "!explorerResourceIsFolder && workspace.inHiddenSpace",
+					"command": "workspace.focusFile",
+					"group": "workspace"
+				},
+				{
+					"when": "!explorerResourceIsFolder && !workspace.inHiddenSpace",
+					"command": "workspace.removeFile",
+					"group": "workspace"
+				},
+				{
+					"when": "explorerResourceIsFolder && workspace.inHiddenSpace",
+					"command": "workspace.focusFolder",
+					"group": "workspace"
+				},
+				{
+					"when": "explorerResourceIsFolder && !workspace.inHiddenSpace",
+					"command": "workspace.removeFolder",
+					"group": "workspace"
+				}
+			]
+		},
+
+		"configuration": {
+			"type": "object",
+			"title": "Workspace",
+			"properties": {
+				"workspace.exclude": {
+					"type": "object",
+					"description": "The files that need to be excluded inside the workspace"
+				}
+			}
+		}
+		
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
@@ -43,11 +112,17 @@
 		"postinstall": "node ./node_modules/vscode/bin/install",
 		"test": "yarn run compile && node ./node_modules/vscode/bin/test"
 	},
+	"dependencies": {
+		"mkdirp": "^0.5.1",
+		"rimraf": "^2.6.2"
+	},
 	"devDependencies": {
 		"typescript": "^3.3.1",
 		"vscode": "^1.1.28",
 		"tslint": "^5.12.1",
 		"@types/node": "^10.12.21",
-		"@types/mocha": "^2.2.42"
+		"@types/mocha": "^2.2.42",
+		"@types/rimraf": "^2.0.2",
+		"@types/mkdirp": "^0.5.2"
 	}
 }
