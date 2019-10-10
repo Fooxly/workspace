@@ -1,6 +1,5 @@
 # Change Log
 
-
 ## [1.0.2] - 2019-10-10
 ### Added
 - Disable creation of settings file when there are no excluded files

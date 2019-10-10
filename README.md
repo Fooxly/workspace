@@ -19,6 +19,7 @@ ext install fooxly.workspace
 * Hiding files and folders
 * Showing the hidden files in the hidden workspace
 * Bring focus back to files and folders from the hidden workspace
+* Options for the priority and visibility of the statusbar toggle
 
 # 🔍 Workspace
 
@@ -34,10 +35,10 @@ A package by [Fooxly](https://www.fooxly.com).
 
 ## 📐 Configuration
 
-*There are no settings at the moment, there will be in the future.*
-
-**NOTE:** if you do have files / folders inside the files.exclude setting (per workspace).
-You will need to add them to the `workspace.exclude` setting.
+| property                             | type      | default               | options                | description |
+| ---                                  | ---       | ---                   | ---                    | ----        |
+| workspace.alwaysShowToggle           | boolean   | true                  | true, false            | Always show the toggle inside the statusbar |
+| workspace.statusbarPriority          | number    | 0                     | -                      | The priority for the statubar toggle |
 
 ## Future plans
 

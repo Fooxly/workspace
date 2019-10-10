@@ -108,7 +108,7 @@
 				},
 				"workspace.statusbarPriority": {
 					"type": "number",
-					"description": "The priority for the statubar item",
+					"description": "The priority for the statubar toggle",
 					"default": "0"
 				}
 			}

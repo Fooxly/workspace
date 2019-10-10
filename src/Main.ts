@@ -17,7 +17,7 @@ export default class Main {
     this.Initialize()
   }
 
-  private Initialize() {
+  private async Initialize() {
     // remove the file from hidden space
     this.registerCommand('workspace.focusFile', async e => {
       let f: any | undefined = this.config.get('exclude')
@@ -84,6 +84,15 @@ export default class Main {
         this.disableFocus()
       }
     })
+
+    let c = workspace.getConfiguration()
+    let de = c.inspect('files.exclude')
+    let ce = this.config.inspect('exclude')
+    if((de && de.workspaceValue && Object.entries(<any>de.workspaceValue).length) &&
+      (!ce || !ce.workspaceValue || !Object.entries(<any>de.workspaceValue).length)) {
+      await this.config.update('exclude', de.workspaceValue)
+    }
+    
     this.createToggle()
     this.enableFocus()
   }
