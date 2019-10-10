@@ -84,16 +84,13 @@ export default class Main {
         this.disableFocus()
       }
     })
-    
-    this.switch = window.createStatusBarItem(StatusBarAlignment.Right, this.config.get('statusbarPriority', 100))
-    this.switch.command = 'workspace.toggleFocus'
-    this.switch.text = '$(archive)'
+    this.createToggle()
     this.enableFocus()
   }
 
   public ConfigChanged(getconfig: boolean = true) {
     if(getconfig) this.config = workspace.getConfiguration('workspace')
-    // TODO: update the switch?
+    this.createToggle()
   }
 
   public registerCommand(uri: string, callback: (...args: any[]) => any) {
@@ -101,6 +98,15 @@ export default class Main {
     let dis = commands.registerCommand(uri, callback)
     this.context.subscriptions.push(dis)
     this.cmds.set(uri, dis)
+  }
+
+  private createToggle() {
+    if(this.switch) this.switch.dispose()
+
+    this.switch = window.createStatusBarItem(StatusBarAlignment.Right, this.config.get('statusbarPriority', 0))
+    this.switch.command = 'workspace.toggleFocus'
+    this.switch.text = '$(archive)'
+    this.updateStatusbarItem()
   }
 
   private async enableFocus() {

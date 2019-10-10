@@ -109,7 +109,7 @@
 				"workspace.statusbarPriority": {
 					"type": "number",
 					"description": "The priority for the statubar item",
-					"default": "100"
+					"default": "0"
 				}
 			}
 		}
