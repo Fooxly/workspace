@@ -74,7 +74,6 @@ export default class Main {
       let c = workspace.getConfiguration()
       await c.update('files.exclude', f)
       this.updateStatusbarItem()
-
     })
 
     // toggle between hidden and non hidden space
@@ -86,7 +85,7 @@ export default class Main {
       }
     })
     
-    this.switch = window.createStatusBarItem(StatusBarAlignment.Right, 100)
+    this.switch = window.createStatusBarItem(StatusBarAlignment.Right, this.config.get('statusbarPriority', 100))
     this.switch.command = 'workspace.toggleFocus'
     this.switch.text = '$(archive)'
     this.enableFocus()
@@ -94,6 +93,7 @@ export default class Main {
 
   public ConfigChanged(getconfig: boolean = true) {
     if(getconfig) this.config = workspace.getConfiguration('workspace')
+    // TODO: update the switch?
   }
 
   public registerCommand(uri: string, callback: (...args: any[]) => any) {

@@ -6,6 +6,7 @@
 - Disable creation of settings file when there are no excluded files
 - Only show the statusbar toggle when there are items hidden
 - Option to switch the statusbar toggle between always active or only when items are hidden
+- Priority option for the statusbar toggle
 
 ## [1.0.1] - 2019-10-10
 ### Added

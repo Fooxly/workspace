@@ -41,7 +41,6 @@ You will need to add them to the `workspace.exclude` setting.
 
 ## Future plans
 
-* Settings for the priority of the statusbar item
 * Change the color of the filename to gray when viewing the hidden files / folders
 * Option to show the amount of hidden folders (or files) inside of your project (inside the statusbar)
 

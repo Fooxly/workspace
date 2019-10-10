@@ -105,6 +105,11 @@
 					"type": "boolean",
 					"description": "Always show the toggle inside the statusbar",
 					"default": "true"
+				},
+				"workspace.statusbarPriority": {
+					"type": "number",
+					"description": "The priority for the statubar item",
+					"default": "100"
 				}
 			}
 		}
