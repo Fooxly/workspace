@@ -14,13 +14,13 @@
 		"sidebar",
 		"workspace"
 	],
-	"homepage": "https://gitlab.com/fooxly/packages/workspace",
+	"homepage": "https://github.com/Fooxly/workspace",
 	"repository": {
 		"type": "git",
-		"url": "https://gitlab.com/fooxly/packages/workspace.git"
+		"url": "https://github.com/Fooxly/workspace.git"
 	},
 	"bugs": {
-		"url": "https://gitlab.com/fooxly/packages/workspace",
+		"url": "https://github.com/Fooxly/workspace",
 		"email": "bugs@fooxly.com"
 	},
 	"galleryBanner": {
