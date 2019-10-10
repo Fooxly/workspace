@@ -1,6 +1,6 @@
 {
 	"name": "workspace",
-	"displayName": "workspace",
+	"displayName": "Workspace",
 	"description": "A more focussed view on your files",
 	"author": "Fooxly",
 	"publisher": "Fooxly",
@@ -27,7 +27,7 @@
 		"color": "#272729",
 		"theme": "dark"
 	},
-	"version": "0.0.1",
+	"version": "1.0.1",
 	"engines": {
 		"vscode": "^1.38.0"
 	},
