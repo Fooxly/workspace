@@ -27,7 +27,7 @@
 		"color": "#272729",
 		"theme": "dark"
 	},
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"engines": {
 		"vscode": "^1.38.0"
 	},
@@ -100,6 +100,11 @@
 				"workspace.exclude": {
 					"type": "object",
 					"description": "The files that need to be excluded inside the workspace"
+				},
+				"workspace.alwaysShowToggle": {
+					"type": "boolean",
+					"description": "Always show the toggle inside the statusbar",
+					"default": "true"
 				}
 			}
 		}
