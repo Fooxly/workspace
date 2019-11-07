@@ -27,7 +27,7 @@
 		"color": "#272729",
 		"theme": "dark"
 	},
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"engines": {
 		"vscode": "^1.38.0"
 	},
@@ -92,7 +92,6 @@
 				}
 			]
 		},
-
 		"configuration": {
 			"type": "object",
 			"title": "Workspace",
@@ -113,11 +112,11 @@
 				}
 			}
 		}
-		
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
-		"compile": "tsc -p ./",
+		"compile": "tsc -p ./ && yarn minify",
+		"minify": "uglifyjs-folder -e -x .js -o out out",
 		"watch": "tsc -watch -p ./",
 		"postinstall": "node ./node_modules/vscode/bin/install",
 		"test": "yarn run compile && node ./node_modules/vscode/bin/test"
@@ -127,12 +126,14 @@
 		"rimraf": "^2.6.2"
 	},
 	"devDependencies": {
-		"typescript": "^3.3.1",
-		"vscode": "^1.1.28",
-		"tslint": "^5.12.1",
-		"@types/node": "^10.12.21",
+		"@types/mkdirp": "^0.5.2",
 		"@types/mocha": "^2.2.42",
+		"@types/node": "^10.12.21",
 		"@types/rimraf": "^2.0.2",
-		"@types/mkdirp": "^0.5.2"
+		"tslint": "^5.12.1",
+		"typescript": "^3.3.1",
+		"uglify-js": "^3.6.8",
+		"uglifyjs-folder": "^1.5.1",
+		"vscode": "^1.1.28"
 	}
 }
