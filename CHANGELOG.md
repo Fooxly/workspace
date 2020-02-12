@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.0.7] - 2020-02-12
+
+### Changed
+
+- Fixed an issue with focussing files
+
 ## [1.0.4] - 2019-10-10
 
 ### Added

@@ -52,8 +52,15 @@ export default class Main {
       let f: any | undefined = this.config.get('exclude')
       if(!f) f = {}
       let p = workspace.asRelativePath(e.path)
+      
+      const n: any = {}
       if(f[p] !== undefined) {
-        delete f[p]
+        Object.keys(f).forEach(k => {
+          if(k !== p) {
+            n[k] = f[k]
+          }
+        })
+        f = n
       }
       await this.config.update('exclude', f)
       // if there are no items left, set back to normal workspace
@@ -140,7 +147,7 @@ export default class Main {
     if(ce && ce.workspaceValue && Object.entries(<any>ce.workspaceValue).length) {
       await c.update('files.exclude', {})
     } else if(de && de.workspaceValue&& Object.entries(<any>de.workspaceValue).length) {
-      await this.config.update('exclude', de.workspaceValue)
+      // await this.config.update('exclude', de.workspaceValue)
       await c.update('files.exclude', {})
     }
     this.updateStatusbarItem()
