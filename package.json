@@ -24,8 +24,8 @@
 		"email": "bugs@fooxly.com"
 	},
 	"galleryBanner": {
-		"color": "#272729",
-		"theme": "dark"
+		"color": "#FAFAFA",
+		"theme": "light"
 	},
 	"version": "1.0.9",
 	"engines": {
