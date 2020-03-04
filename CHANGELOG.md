@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.0.9] - 2020-03-04
+
+### Changed
+
+- Small text fixes to the README.md which were not noticed before
+
 ## [1.0.8] - 2020-03-04
 
 ### Changed

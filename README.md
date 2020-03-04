@@ -1,5 +1,5 @@
 <p align="center">
-  <a title="Learn more about the Provision Syntax" href="https://marketplace.visualstudio.com/items?itemName=fooxly.workspace">
+  <a title="Learn more about workspace" href="https://marketplace.visualstudio.com/items?itemName=fooxly.workspace">
     <img src="https://assets.fooxly.com/extensions/workspace/banner.jpg" alt="Workspace" width="100%" />
   </a>
 </p>
