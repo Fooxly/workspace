@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.0.8] - 2020-03-04
+
+### Changed
+
+- README.md
+
 ## [1.0.7] - 2020-02-12
 
 ### Changed
