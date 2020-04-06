@@ -79,7 +79,12 @@ export default class Main {
       }
       this.update()
     })()
+  }
 
+  public destroy () {
+    if(this.switch) {
+      this.switch.dispose()
+    }
   }
 
   public configUpdate(ev: ConfigurationChangeEvent) {
