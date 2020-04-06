@@ -5,9 +5,7 @@ var main: Main
 export function activate(context: vscode.ExtensionContext) {
 	main = new Main(context)
 	vscode.workspace.onDidChangeConfiguration(e => {
-		if(e.affectsConfiguration('workspace')) {
-			main.configUpdate(e)
-		}
+		main.configUpdate(e)
 	})
 }
 

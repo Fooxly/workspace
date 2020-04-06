@@ -66,10 +66,10 @@ export default class Main {
     this.registerCommand('workspace.toggleFocus', () => {
       this.toggleFocus()
     })
-
+    
     ;(async () => {
       const isHidden = workspaceConfig.inspect('isHidden')
-      if (isHidden && !!isHidden.workspaceValue) {
+      if (isHidden && isHidden.workspaceValue !== undefined) {
         this.inHiddenSpace = !(isHidden.workspaceValue as boolean)
       } else {
         const excluded = config.inspect('exclude')
@@ -83,8 +83,12 @@ export default class Main {
   }
 
   public configUpdate(ev: ConfigurationChangeEvent) {
-    if(!ev.affectsConfiguration('workspace.isHidden')) {
-      this.update(true)
+    if(ev.affectsConfiguration('workspace')) {
+      if(!ev.affectsConfiguration('workspace.isHidden')) {
+        this.update(true)
+      }
+		} else if(ev.affectsConfiguration('files')) {
+      this.update()
     }
   }
 
@@ -101,12 +105,12 @@ export default class Main {
       }
       this.switch = window.createStatusBarItem(StatusBarAlignment.Right, workspaceConfig.get('statusbarPriority', 0))
       this.switch.command = 'workspace.toggleFocus'
-      this.switch.show()
     }
-
     // hide when no files are hidden (and the always show option is false)
     if(!Object.keys(excluded.workspaceValue).length && !workspaceConfig.get('alwaysShowToggle', true)) {
       this.switch.hide()
+    } else {
+      this.switch.show()
     }
 
     // FIXME: get correct amount of files which are exluded (folders count as 1 now)
@@ -151,6 +155,7 @@ export default class Main {
       this.inHiddenSpace = !this.inHiddenSpace
       // update the value (this also updates the statusbar item)
       await workspaceConfig.update('isHidden', !this.inHiddenSpace, ConfigurationTarget.Workspace)
+      this.update()
     })()
   }
 
