@@ -106,12 +106,6 @@ export default class Main {
       this.switch = window.createStatusBarItem(StatusBarAlignment.Right, workspaceConfig.get('statusbarPriority', 0))
       this.switch.command = 'workspace.toggleFocus'
     }
-    // hide when no files are hidden (and the always show option is false)
-    if(!Object.keys(excluded.workspaceValue).length && !workspaceConfig.get('alwaysShowToggle', true)) {
-      this.switch.hide()
-    } else {
-      this.switch.show()
-    }
 
     // FIXME: get correct amount of files which are exluded (folders count as 1 now)
     if (workspaceConfig.get('disableCounter', false) === false) {
@@ -130,6 +124,13 @@ export default class Main {
     } else {
       this.switch.tooltip = 'Show hidden files'
       this.switch.color = undefined
+    }
+
+    // hide when no files are hidden (and the always show option is false)
+    if(!Object.keys(excluded.workspaceValue).length && !workspaceConfig.get('alwaysShowToggle', true)) {
+      this.switch.hide()
+    } else {
+      this.switch.show()
     }
   }
 
