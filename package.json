@@ -12,7 +12,14 @@
 		"code",
 		"focus",
 		"sidebar",
-		"workspace"
+		"workspace",
+		"file",
+		"files",
+		"folder",
+		"folders",
+		"hide",
+		"hidden",
+		"show"
 	],
 	"homepage": "https://github.com/Fooxly/workspace",
 	"repository": {
@@ -41,24 +48,12 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "workspace.focusFile",
-				"title": "Focus file"
+				"command": "workspace.toggleFile",
+				"title": "Toggle file"
 			},
 			{
-				"command": "workspace.removeFile",
-				"title": "Forget file"
-			},
-			{
-				"command": "workspace.focusFolder",
-				"title": "Focus folder"
-			},
-			{
-				"command": "workspace.removeFolder",
-				"title": "Forget folder"
-			},
-			{
-				"command": "workspace.toggleFocus",
-				"title": "Toggle workplace"
+				"command": "workspace.toggleFolder",
+				"title": "Toggle folder"
 			}
 		],
 		"keybindings": [
@@ -71,34 +66,36 @@
 		"menus": {
 			"explorer/context": [
 				{
-					"when": "!explorerResourceIsFolder && workspace.inHiddenSpace",
-					"command": "workspace.focusFile",
+					"when": "!explorerResourceIsFolder",
+					"command": "workspace.toggleFile",
 					"group": "workspace"
 				},
 				{
-					"when": "!explorerResourceIsFolder && !workspace.inHiddenSpace",
-					"command": "workspace.removeFile",
-					"group": "workspace"
-				},
-				{
-					"when": "explorerResourceIsFolder && workspace.inHiddenSpace",
-					"command": "workspace.focusFolder",
-					"group": "workspace"
-				},
-				{
-					"when": "explorerResourceIsFolder && !workspace.inHiddenSpace",
-					"command": "workspace.removeFolder",
+					"when": "explorerResourceIsFolder",
+					"command": "workspace.toggleFolder",
 					"group": "workspace"
 				}
 			]
 		},
+		"colors": [
+			{
+				"id": "workspace.hiddenColor",
+				"description": "Color shown when the hidden files are visible",
+				"defaults": {
+					"dark": "#E06256",
+					"light": "#E06256",
+					"highContrast": "#FF0000"
+				}
+			}
+		],
 		"configuration": {
 			"type": "object",
 			"title": "Workspace",
 			"properties": {
-				"workspace.exclude": {
-					"type": "object",
-					"description": "The files that need to be excluded inside the workspace"
+				"workspace.isHidden": {
+					"type": "boolean",
+					"description": "Are the files hidden or not",
+					"default": "true"
 				},
 				"workspace.alwaysShowToggle": {
 					"type": "boolean",

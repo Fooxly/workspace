@@ -1,112 +1,137 @@
-import {Disposable, ExtensionContext, commands, workspace, WorkspaceConfiguration, window, StatusBarAlignment, StatusBarItem} from 'vscode'
+import { Disposable, ExtensionContext, commands, workspace, WorkspaceConfiguration, window, StatusBarAlignment, StatusBarItem, ConfigurationTarget, ThemeColor } from 'vscode'
 import * as fs from 'fs'
 
 export default class Main {
   public context: ExtensionContext
   private cmds: Map<string, Disposable> = new Map<string, Disposable>()
 
-  public config: WorkspaceConfiguration
-
   private inHiddenSpace: boolean = false
   private switch?: StatusBarItem
 
   constructor(context: ExtensionContext) {
     this.context = context
-    this.config = workspace.getConfiguration('workspace')
-    this.ConfigChanged(false)
     this.Initialize()
   }
 
   private async Initialize() {
-    // remove the file from hidden space
-    this.registerCommand('workspace.focusFile', async e => {
-      let f: any | undefined = this.config.get('exclude')
-      if(!f) f = {}
-      let p = workspace.asRelativePath(e.path)
-      if(f[p] !== undefined) {
-        delete f[p]
+    const workspaceConfig = workspace.getConfiguration('workspace')
+    const config = workspace.getConfiguration('files')
+    const isHidden = workspaceConfig.inspect('isHidden')
+    if (isHidden && !!isHidden.workspaceValue) {
+      this.inHiddenSpace = isHidden.workspaceValue as boolean
+    } else {
+      const excluded = config.inspect('exclude')
+      if (excluded && excluded.workspaceValue && Object.keys(<any>excluded.workspaceValue).length) {
+        workspaceConfig.update('isHidden', false, ConfigurationTarget.Workspace)
       }
-      await this.config.update('exclude', f)
-      // if there are no items left, set back to normal workspace
-      let t: any = this.config.get('exclude')
-      if(Object.keys(t).length === 0) {
-        this.enableFocus()
+    }
+
+    this.registerCommand('workspace.toggleFile', ev => {
+      const config = workspace.getConfiguration('files')
+      const excluded = config.inspect('exclude')
+      let files: any = null
+      if (excluded && excluded.workspaceValue) {
+        files = excluded.workspaceValue
+      }
+      const path = workspace.asRelativePath(ev.path)
+      // check if file is inside the files.exclude
+      if (Object.keys(files).includes(path)) {
+        // remove it from the files.exclude
+        delete files[path]
       } else {
-        this.updateStatusbarItem()
+        // else: add file to files.exclude
+        files[path] = true
       }
-    })
-    // add file to hidden space
-    this.registerCommand('workspace.removeFile', async e => {
-      let f: any | undefined = this.config.get('exclude')
-      if(!f) f = {}
-      f[workspace.asRelativePath(e.path)] = true
-      this.config.update('exclude', f)
-      
-      let c = workspace.getConfiguration()
-      await c.update('files.exclude', f)
-      this.updateStatusbarItem()
+      // update the config
+      config.update('exclude', files, ConfigurationTarget.Workspace)
+      this.update()
     })
 
-    // remove the folder from hidden space
-    this.registerCommand('workspace.focusFolder', async e => {
-      let f: any | undefined = this.config.get('exclude')
-      if(!f) f = {}
-      let p = workspace.asRelativePath(e.path)
-      
-      const n: any = {}
-      if(f[p] !== undefined) {
-        Object.keys(f).forEach(k => {
-          if(k !== p) {
-            n[k] = f[k]
+    this.registerCommand('workspace.toggleFolder', ev => {
+      const config = workspace.getConfiguration('files')
+      const excluded = config.inspect('exclude')
+      let files: any = null
+      if (excluded && excluded.workspaceValue) {
+        files = excluded.workspaceValue
+      }
+      const path = workspace.asRelativePath(ev.path)
+      // check if folder is inside the files.exclude
+      if (Object.keys(files).includes(path)) {
+        // remove the folder and sub files from the files.exclude
+        for (const key in files) {
+          if (key.indexOf(path) > -1) {
+            delete files[key]
           }
-        })
-        f = n
-      }
-      await this.config.update('exclude', f)
-      // if there are no items left, set back to normal workspace
-      let t: any = this.config.get('exclude')
-      if(Object.keys(t).length === 0) {
-        this.enableFocus()
+        }
       } else {
-        this.updateStatusbarItem()
+        // else: add folder to files.exclude
+        files[path] = true
       }
-    })
-    // add folder to hidden space
-    this.registerCommand('workspace.removeFolder', async e => {
-      let f: any | undefined = this.config.get('exclude')
-      if(!f) f = {}
-      f[workspace.asRelativePath(e.path)] = true
-      this.config.update('exclude', f)
-      
-      let c = workspace.getConfiguration()
-      await c.update('files.exclude', f)
-      this.updateStatusbarItem()
+      // update the config
+      config.update('exclude', files, ConfigurationTarget.Workspace)
+      this.update()
     })
 
     // toggle between hidden and non hidden space
     this.registerCommand('workspace.toggleFocus', () => {
-      if(this.inHiddenSpace) {
-        this.enableFocus()
-      } else {
-        this.disableFocus()
-      }
+      this.toggleFocus()
     })
 
-    let c = workspace.getConfiguration()
-    let de = c.inspect('files.exclude')
-    let ce = this.config.inspect('exclude')
-    if((de && de.workspaceValue && Object.entries(<any>de.workspaceValue).length) &&
-      (!ce || !ce.workspaceValue || !Object.entries(<any>de.workspaceValue).length)) {
-      await this.config.update('exclude', de.workspaceValue)
-    }
-    
-    this.createToggle()
-    this.enableFocus()
+    this.update()
   }
 
-  public ConfigChanged(getconfig: boolean = true) {
-    if(getconfig) this.config = workspace.getConfiguration('workspace')
-    this.createToggle()
+  // update the statusbar item
+  public update() {
+    const workspaceConfig = workspace.getConfiguration('workspace')
+    const config = workspace.getConfiguration('files')
+    const excluded: any = config.inspect('exclude')
+
+    workspaceConfig.update('isHidden', this.inHiddenSpace, ConfigurationTarget.Workspace)
+
+    // create the switch if it does not already exist
+    if (!this.switch) {
+      this.switch = window.createStatusBarItem(StatusBarAlignment.Right, workspaceConfig.get('statusbarPriority', 0))
+      this.switch.command = 'workspace.toggleFocus'
+      this.switch.show()
+    }
+
+    // hide when no files are hidden (and the always show option is false)
+    if(!Object.keys(excluded.workspaceValue).length && !workspaceConfig.get('alwaysShowToggle', true)) {
+      this.switch.hide()
+    }
+
+    // FIXME: get correct amount of files which are exluded (folders count as 1 now)
+    this.switch.text = `$(archive) ${Object.keys(excluded.workspaceValue).length || 0}`
+    if(this.inHiddenSpace) {
+      this.switch.tooltip = 'Hide hidden files'
+      this.switch.color = new ThemeColor('workspace.hiddenColor')
+    } else {
+      this.switch.tooltip = 'Show hidden files'
+      this.switch.color = undefined
+    }
+  }
+
+  private toggleFocus () {
+    (async () => {
+      const config = workspace.getConfiguration('files')
+      const excluded = config.inspect('exclude')
+      let files: any = null
+      if (excluded && excluded.workspaceValue) {
+        files = excluded.workspaceValue
+      }
+      // update the files
+      if (files) {
+        for(const key in files) {
+          files[key] = this.inHiddenSpace
+        }
+      }
+      // update the settings
+      await config.update('exclude', files)
+      // switch hidden space boolean
+      this.inHiddenSpace = !this.inHiddenSpace
+      // update the statusbar item
+      this.update()
+    })()
   }
 
   public registerCommand(uri: string, callback: (...args: any[]) => any) {
@@ -114,64 +139,5 @@ export default class Main {
     let dis = commands.registerCommand(uri, callback)
     this.context.subscriptions.push(dis)
     this.cmds.set(uri, dis)
-  }
-
-  private createToggle() {
-    if(this.switch) this.switch.dispose()
-
-    this.switch = window.createStatusBarItem(StatusBarAlignment.Right, this.config.get('statusbarPriority', 0))
-    this.switch.command = 'workspace.toggleFocus'
-    this.switch.text = '$(archive)'
-    this.updateStatusbarItem()
-  }
-
-  private async enableFocus() {
-    this.inHiddenSpace = false
-    commands.executeCommand('setContext', 'workspace.inHiddenSpace', this.inHiddenSpace)
-    let c = workspace.getConfiguration()
-
-    let ce = this.config.inspect('exclude')
-    if(ce && ce.workspaceValue && Object.entries(<any>ce.workspaceValue).length) {
-      await c.update('files.exclude', ce.workspaceValue)
-    }
-    this.updateStatusbarItem()
-  }
-  
-  private async disableFocus() {
-    this.inHiddenSpace = true
-    commands.executeCommand('setContext', 'workspace.inHiddenSpace', this.inHiddenSpace)
-    let c = workspace.getConfiguration()
-
-    let de = c.inspect('files.exclude')
-    let ce = this.config.inspect('exclude')
-    if(ce && ce.workspaceValue && Object.entries(<any>ce.workspaceValue).length) {
-      await c.update('files.exclude', {})
-    } else if(de && de.workspaceValue&& Object.entries(<any>de.workspaceValue).length) {
-      // await this.config.update('exclude', de.workspaceValue)
-      await c.update('files.exclude', {})
-    }
-    this.updateStatusbarItem()
-  }
-
-  private updateStatusbarItem() {
-    if(this.switch) {
-      let c = workspace.getConfiguration()
-      let de = c.inspect('files.exclude')
-      let ce = this.config.inspect('exclude')
-      if((ce && ce.workspaceValue && Object.entries(<any>ce.workspaceValue).length) ||
-         (de && de.workspaceValue && Object.entries(<any>de.workspaceValue).length)) {
-        this.switch.show()
-      } else {
-        if(!this.config.get('alwaysShowToggle', true)) {
-          this.switch.hide()
-        }
-      }
-      
-      if(this.inHiddenSpace) {
-        this.switch.tooltip = 'Hide hidden files'
-      } else {
-        this.switch.tooltip = 'Show hidden files'
-      }
-    }
   }
 }
