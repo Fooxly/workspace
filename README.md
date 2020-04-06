@@ -16,10 +16,11 @@ ext install fooxly.workspace
 
 # 🚀 Recently Added
 
-* Hiding files and folders
-* Showing the hidden files in the hidden workspace
-* Bring focus back to files and folders from the hidden workspace
-* Options for the priority and visibility of the statusbar toggle
+* Theme coloring for the active state
+* Option to disable the theme coloring
+* Counter for the number of entries listed
+* Option to disable the counter
+* Optimalization to the add and remove functions
 
 ## ❤&nbsp; Support us
 
@@ -55,13 +56,14 @@ A package by [Fooxly](https://www.fooxly.com).
 
 | property                             | type      | default               | options                | description |
 | ---                                  | ---       | ---                   | ---                    | ----        |
+| workspace.disableCounter             | boolean   | false                 | true, false            | Disable the counter inside the statusbar item |
+| workspace.disableColoring            | boolean   | false                 | true, false            | Disable the coloring when the hidden files are visible |
 | workspace.alwaysShowToggle           | boolean   | true                  | true, false            | Always show the toggle inside the statusbar |
 | workspace.statusbarPriority          | number    | 0                     | -                      | The priority for the statubar toggle |
 
 ## Future plans
 
 * Change the color of the filename to gray when viewing the hidden files / folders
-* Option to show the amount of hidden folders (or files) inside of your project (inside the statusbar)
 
 ## License
 

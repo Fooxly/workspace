@@ -1,5 +1,23 @@
 # Change Log
 
+## [1.1.0] - 2020-04-06
+
+### Added
+
+- Color property called `workspace.hiddenColor` which shows when the hidden files are visible
+- Option to disable the new coloring
+- Added number in statusbar item to show the amount of hidden entries (folders don't count the files inside, folders just add 1)
+- Option to disable the counter for the statusbar item
+
+### Changed
+
+- Use true/false value of the files.exclude instead of removing the object content
+- Forget and Focus buttons are now 1 single button called toggle (for folders and files)
+
+### Removed
+
+- Removed workspace.exclude property
+
 ## [1.0.9] - 2020-03-04
 
 ### Changed

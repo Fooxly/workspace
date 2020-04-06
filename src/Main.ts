@@ -1,5 +1,4 @@
-import { Disposable, ExtensionContext, commands, workspace, WorkspaceConfiguration, window, StatusBarAlignment, StatusBarItem, ConfigurationTarget, ThemeColor } from 'vscode'
-import * as fs from 'fs'
+import { Disposable, ExtensionContext, commands, workspace, window, StatusBarAlignment, StatusBarItem, ConfigurationTarget, ThemeColor, ConfigurationChangeEvent } from 'vscode'
 
 export default class Main {
   public context: ExtensionContext
@@ -16,15 +15,6 @@ export default class Main {
   private async Initialize() {
     const workspaceConfig = workspace.getConfiguration('workspace')
     const config = workspace.getConfiguration('files')
-    const isHidden = workspaceConfig.inspect('isHidden')
-    if (isHidden && !!isHidden.workspaceValue) {
-      this.inHiddenSpace = isHidden.workspaceValue as boolean
-    } else {
-      const excluded = config.inspect('exclude')
-      if (excluded && excluded.workspaceValue && Object.keys(<any>excluded.workspaceValue).length) {
-        workspaceConfig.update('isHidden', false, ConfigurationTarget.Workspace)
-      }
-    }
 
     this.registerCommand('workspace.toggleFile', ev => {
       const config = workspace.getConfiguration('files')
@@ -77,19 +67,38 @@ export default class Main {
       this.toggleFocus()
     })
 
-    this.update()
+    ;(async () => {
+      const isHidden = workspaceConfig.inspect('isHidden')
+      if (isHidden && !!isHidden.workspaceValue) {
+        this.inHiddenSpace = !(isHidden.workspaceValue as boolean)
+      } else {
+        const excluded = config.inspect('exclude')
+        if (excluded && excluded.workspaceValue && Object.keys(<any>excluded.workspaceValue).length) {
+          await workspaceConfig.update('isHidden', false, ConfigurationTarget.Workspace)
+        }
+      }
+      this.update()
+    })()
+
+  }
+
+  public configUpdate(ev: ConfigurationChangeEvent) {
+    if(!ev.affectsConfiguration('workspace.isHidden')) {
+      this.update(true)
+    }
   }
 
   // update the statusbar item
-  public update() {
+  private update(force = false) {
     const workspaceConfig = workspace.getConfiguration('workspace')
     const config = workspace.getConfiguration('files')
     const excluded: any = config.inspect('exclude')
 
-    workspaceConfig.update('isHidden', this.inHiddenSpace, ConfigurationTarget.Workspace)
-
     // create the switch if it does not already exist
-    if (!this.switch) {
+    if (this.switch === undefined || force) {
+      if(this.switch) {
+        this.switch.dispose()
+      }
       this.switch = window.createStatusBarItem(StatusBarAlignment.Right, workspaceConfig.get('statusbarPriority', 0))
       this.switch.command = 'workspace.toggleFocus'
       this.switch.show()
@@ -101,10 +110,19 @@ export default class Main {
     }
 
     // FIXME: get correct amount of files which are exluded (folders count as 1 now)
-    this.switch.text = `$(archive) ${Object.keys(excluded.workspaceValue).length || 0}`
+    if (workspaceConfig.get('disableCounter', false) === false) {
+      this.switch.text = `$(archive) ${Object.keys(excluded.workspaceValue).length || 0}`
+    } else {
+      this.switch.text = '$(archive)'
+    }
+
     if(this.inHiddenSpace) {
       this.switch.tooltip = 'Hide hidden files'
-      this.switch.color = new ThemeColor('workspace.hiddenColor')
+      if (workspaceConfig.get('disableColoring', false) === false) {
+        this.switch.color = new ThemeColor('workspace.hiddenColor')
+      } else {
+        this.switch.color = undefined
+      }
     } else {
       this.switch.tooltip = 'Show hidden files'
       this.switch.color = undefined
@@ -113,6 +131,7 @@ export default class Main {
 
   private toggleFocus () {
     (async () => {
+      const workspaceConfig = workspace.getConfiguration('workspace')
       const config = workspace.getConfiguration('files')
       const excluded = config.inspect('exclude')
       let files: any = null
@@ -126,11 +145,12 @@ export default class Main {
         }
       }
       // update the settings
+      
       await config.update('exclude', files)
       // switch hidden space boolean
       this.inHiddenSpace = !this.inHiddenSpace
-      // update the statusbar item
-      this.update()
+      // update the value (this also updates the statusbar item)
+      await workspaceConfig.update('isHidden', !this.inHiddenSpace, ConfigurationTarget.Workspace)
     })()
   }
 

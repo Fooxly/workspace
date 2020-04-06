@@ -34,7 +34,7 @@
 		"color": "#FAFAFA",
 		"theme": "light"
 	},
-	"version": "1.0.9",
+	"version": "1.1.0",
 	"engines": {
 		"vscode": "^1.38.0"
 	},
@@ -92,20 +92,30 @@
 			"type": "object",
 			"title": "Workspace",
 			"properties": {
-				"workspace.isHidden": {
+				"workspace.disableCounter": {
 					"type": "boolean",
-					"description": "Are the files hidden or not",
-					"default": "true"
+					"description": "Disable the counter inside the statusbar item",
+					"default": false
+				},
+				"workspace.disableColoring": {
+					"type": "boolean",
+					"description": "Disable the coloring when the hidden files are visible",
+					"default": false
 				},
 				"workspace.alwaysShowToggle": {
 					"type": "boolean",
 					"description": "Always show the toggle inside the statusbar",
-					"default": "true"
+					"default": true
 				},
 				"workspace.statusbarPriority": {
 					"type": "number",
 					"description": "The priority for the statubar toggle",
-					"default": "0"
+					"default": 0
+				},
+				"workspace.isHidden": {
+					"type": "boolean",
+					"description": "Are the files hidden or not",
+					"default": true
 				}
 			}
 		}
