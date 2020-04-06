@@ -105,6 +105,7 @@ export default class Main {
       }
       this.switch = window.createStatusBarItem(StatusBarAlignment.Right, workspaceConfig.get('statusbarPriority', 0))
       this.switch.command = 'workspace.toggleFocus'
+      this.context.subscriptions.push(this.switch)
     }
 
     // FIXME: get correct amount of files which are exluded (folders count as 1 now)
