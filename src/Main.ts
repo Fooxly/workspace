@@ -17,10 +17,11 @@ export default class Main {
   private async Initialize() {
     this.registerCommand('workspace.toggleFile', ev => {
       const excluded = this.config.inspect('files.exclude')
-      let files: any = null
+      let files: any = undefined
       if (excluded && excluded.workspaceValue) {
         files = excluded.workspaceValue
       }
+      if (!files) files = {}
       const path = workspace.asRelativePath(ev.path)
       // check if file is inside the files.exclude
       if (Object.keys(files).includes(path)) {
@@ -37,10 +38,11 @@ export default class Main {
 
     this.registerCommand('workspace.toggleFolder', ev => {
       const excluded = this.config.inspect('files.exclude')
-      let files: any = null
+      let files: any = undefined
       if (excluded && excluded.workspaceValue) {
         files = excluded.workspaceValue
       }
+      if (!files) files = {}
       const path = workspace.asRelativePath(ev.path)
       // check if folder is inside the files.exclude
       if (Object.keys(files).includes(path)) {
@@ -139,7 +141,7 @@ export default class Main {
 
   private async toggleFocus () {
     const excluded = this.config.inspect('files.exclude')
-    let files: any = null
+    let files: any = undefined
     if (excluded && excluded.workspaceValue) {
       files = excluded.workspaceValue
     }
@@ -154,7 +156,7 @@ export default class Main {
     // FIXME: flickering of statusbar happens here somewhere (when the config is not updated the statusbar does not flicker)
     await this.config.update('workspace.isHidden', !this.inHiddenSpace, ConfigurationTarget.Workspace)
     // update the value (this also updates the statusbar item)
-    await this.config.update('files.exclude', files, ConfigurationTarget.Workspace)
+    await this.config.update('files.exclude', files ?? undefined, ConfigurationTarget.Workspace)
   }
 
   public registerCommand(uri: string, callback: (...args: any[]) => any) {

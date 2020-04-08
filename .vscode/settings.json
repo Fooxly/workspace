@@ -1,12 +1,15 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "files.exclude": {
-        ".vscode": false
+        ".vscode": true
     },
     "search.exclude": {
         "out": true // set this to false to include "out" folder in search results
     },
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",
-    "workspace.isHidden": false,
+    "workspace.isHidden": true,
+    "workspace.exclude": {
+        ".vscode": true
+    },
 }

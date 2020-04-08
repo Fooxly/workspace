@@ -61,6 +61,12 @@ A package by [Fooxly](https://www.fooxly.com).
 | workspace.alwaysShowToggle           | boolean   | true                  | true, false            | Always show the toggle inside the statusbar |
 | workspace.statusbarPriority          | number    | 0                     | -                      | The priority for the statubar toggle |
 
+## 🎨 Theming
+
+| property              | description |
+| ---                   | ---         |
+| workspace.hiddenColor | The color used for when the hidden entries are visible. This is to easily show users that their hidden files are visible |
+
 ## Future plans
 
 * Change the color of the filename to gray when viewing the hidden files / folders
