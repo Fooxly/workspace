@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.1.1] - 2020-04-08
+
+### Added
+
+- Preview inside  the README.md
+
 ## [1.1.0] - 2020-04-08
 
 ### Added

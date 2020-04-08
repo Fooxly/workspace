@@ -53,6 +53,10 @@ A package by [Fooxly](https://www.fooxly.com).
 * View your hidden files
 * Bring back a hidden file or folder
 
+## 💻&nbsp; Preview
+
+<img src="https://assets.fooxly.com/extensions/workspace/example.gif" alt="Preview" width="400" />
+
 ## 📐 Configuration
 
 | property                             | type      | default               | options                | description |
