@@ -16,6 +16,7 @@ ext install fooxly.workspace
 
 # 🚀 Recently Added
 
+* Multiple files/folder selection
 * Theme coloring for the active state
 * Option to disable the theme coloring
 * Counter for the number of entries listed

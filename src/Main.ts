@@ -1,4 +1,5 @@
-import { Disposable, ExtensionContext, commands, workspace, window, StatusBarAlignment, StatusBarItem, ConfigurationTarget, ThemeColor, ConfigurationChangeEvent, WorkspaceConfiguration } from 'vscode'
+import { Disposable, ExtensionContext, commands, workspace, window, StatusBarAlignment, StatusBarItem, ConfigurationTarget, ThemeColor, ConfigurationChangeEvent, WorkspaceConfiguration, Uri } from 'vscode'
+import * as fs from 'fs'
 
 export default class Main {
   public context: ExtensionContext
@@ -15,50 +16,27 @@ export default class Main {
   }
 
   private async Initialize() {
-    this.registerCommand('workspace.toggleFile', ev => {
-      const excluded = this.config.inspect('files.exclude')
-      let files: any = undefined
-      if (excluded && excluded.workspaceValue) {
-        files = excluded.workspaceValue
-      }
-      if (!files) files = {}
-      const path = workspace.asRelativePath(ev.path)
-      // check if file is inside the files.exclude
-      if (Object.keys(files).includes(path)) {
-        // remove it from the files.exclude
-        delete files[path]
-      } else {
-        // else: add file to files.exclude
-        files[path] = true
-      }
-      // update the config
-      this.config.update('files.exclude', files, ConfigurationTarget.Workspace)
-      this.update()
-    })
 
-    this.registerCommand('workspace.toggleFolder', ev => {
+    this.registerCommand('workspace.toggle', (_, files) => {
       const excluded = this.config.inspect('files.exclude')
-      let files: any = undefined
+      let items: any = undefined
       if (excluded && excluded.workspaceValue) {
-        files = excluded.workspaceValue
+        items = excluded.workspaceValue
       }
-      if (!files) files = {}
-      const path = workspace.asRelativePath(ev.path)
-      // check if folder is inside the files.exclude
-      if (Object.keys(files).includes(path)) {
-        // remove the folder and sub files from the files.exclude
-        for (const key in files) {
-          if (key.indexOf(path) > -1) {
-            delete files[key]
+      if (!items) items = {}
+
+      for(const f of files) {
+        if (fs.existsSync(f.fsPath)) {
+          if (fs.lstatSync(f.fsPath).isDirectory()) {
+            items = this.toggleFolder(items, f)
+          } else {
+            items = this.toggleFile(items, f)
           }
         }
-      } else {
-        // else: add folder to files.exclude
-        files[path] = true
       }
+      if (items === null) items = undefined
       // update the config
-      this.config.update('files.exclude', files, ConfigurationTarget.Workspace)
-      this.update()
+      this.config.update('files.exclude', items, ConfigurationTarget.Workspace)
     })
 
     // toggle between hidden and non hidden space
@@ -96,6 +74,38 @@ export default class Main {
 		} else if (ev.affectsConfiguration('files')) {
       this.update()
     }
+  }
+
+  private toggleFile(items: any, file: Uri): any {
+    const newItems = items
+    const path = workspace.asRelativePath(file.path)
+    // check if file is inside the files.exclude
+    if (Object.keys(newItems).includes(path)) {
+      // remove it from the files.exclude
+      delete newItems[path]
+    } else {
+      // else: add file to files.exclude
+      newItems[path] = !this.inHiddenSpace
+    }
+    return newItems
+  }
+
+  private toggleFolder(items: any, folder: Uri): any {
+    const newItems = items
+    const path = workspace.asRelativePath(folder.path)
+    // check if folder is inside the files.exclude
+    if (Object.keys(newItems).includes(path)) {
+      // remove the folder and sub files from the files.exclude
+      for (const key in newItems) {
+        if (key.indexOf(path) > -1) {
+          delete newItems[key]
+        }
+      }
+    } else {
+      // else: add folder to files.exclude
+      newItems[path] = !this.inHiddenSpace
+    }
+    return newItems
   }
 
   // update the statusbar item

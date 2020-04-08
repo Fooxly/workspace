@@ -48,12 +48,8 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "workspace.toggleFile",
-				"title": "Toggle file"
-			},
-			{
-				"command": "workspace.toggleFolder",
-				"title": "Toggle folder"
+				"command": "workspace.toggle",
+				"title": "Toggle"
 			}
 		],
 		"keybindings": [
@@ -66,13 +62,7 @@
 		"menus": {
 			"explorer/context": [
 				{
-					"when": "!explorerResourceIsFolder",
-					"command": "workspace.toggleFile",
-					"group": "workspace"
-				},
-				{
-					"when": "explorerResourceIsFolder",
-					"command": "workspace.toggleFolder",
+					"command": "workspace.toggle",
 					"group": "workspace"
 				}
 			]
