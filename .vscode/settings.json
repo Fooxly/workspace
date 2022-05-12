@@ -5,18 +5,18 @@
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",
     "files.exclude": {
-        "out": false,
-        ".github": false,
-        ".vscode": false,
-        ".vscode-test": false,
-        "node_modules": false,
-        ".babelrc": false,
-        ".eslintrc.json": false,
-        ".gitignore": false,
-        ".vscodeignore": false,
-        "tsconfig.json": false,
-        "tslint.json": false,
-        "yarn.lock": false
+        "out": true,
+        ".github": true,
+        ".vscode": true,
+        ".vscode-test": true,
+        "node_modules": true,
+        ".babelrc": true,
+        ".eslintrc.json": true,
+        ".gitignore": true,
+        ".vscodeignore": true,
+        "tsconfig.json": true,
+        "tslint.json": true,
+        "yarn.lock": true
     },
-    "workspace.isHidden": false
+    "workspace.isHidden": true
 }

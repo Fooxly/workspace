@@ -1,134 +1,129 @@
 {
-	"name": "workspace",
-	"displayName": "Workspace",
-	"author": "Fooxly <hello@fooxly.com> (https://developer.fooxly.com/)",
-	"description": "A more focused view on your files",
-	"version": "1.1.3",
-	"keywords": [
-		"fooxly",
-		"vscode",
-		"code",
-		"focus",
-		"sidebar",
-		"workspace",
-		"file",
-		"files",
-		"folder",
-		"folders",
-		"hide",
-		"hidden",
-		"show"
-	],
-	"homepage": "https://github.com/Fooxly/workspace",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Fooxly/workspace.git"
-	},
-	"bugs": {
-		"url": "https://github.com/Fooxly/workspace",
-		"email": "bugs@fooxly.com"
-	},
-	"license": "MIT",
-	"main": "./out/extension.js",
-	"engines": {
-		"yarn": ">=1",
-		"node": ">=12",
-		"vscode": "^1.38.0"
-	},
-	"scripts": {
-		"package": "yarn run compile && vsce package --yarn -o extension.vsix",
-		"compile": "tsc -p ./ && yarn minify",
-		"minify": "uglifyjs-folder -e -x .js -o out out",
-		"watch": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"test": "yarn run compile && node ./node_modules/vscode/bin/test"
-	},
-	"dependencies": {},
-	"devDependencies": {
-		"@types/mocha": "^8.2.2",
-		"@types/node": "^15.6.1",
-		"tslint": "^6.1.3",
-		"typescript": "^4.3.2",
-		"uglify-js": "^3.13.8",
-		"uglifyjs-folder": "^2.0.0",
-		"vsce": "^1.88.0",
-		"vscode": "^1.1.37"
-	},
-	"publisher": "Fooxly",
-	"icon": "assets/icon.png",
-	"galleryBanner": {
-		"color": "#FAFAFA",
-		"theme": "light"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"*"
-	],
-	"contributes": {
-		"commands": [
-			{
-				"command": "workspace.toggle",
-				"title": "Toggle"
-			}
-		],
-		"keybindings": [
-			{
-				"command": "workspace.toggleFocus",
-				"key": "ctrl+shift+K",
-				"mac": "cmd+shift+K"
-			}
-		],
-		"menus": {
-			"explorer/context": [
-				{
-					"command": "workspace.toggle",
-					"group": "workspace"
-				}
-			]
-		},
-		"colors": [
-			{
-				"id": "workspace.hiddenColor",
-				"description": "Color shown when the hidden files are visible",
-				"defaults": {
-					"dark": "#E06256",
-					"light": "#E06256",
-					"highContrast": "#FF0000"
-				}
-			}
-		],
-		"configuration": {
-			"type": "object",
-			"title": "Workspace",
-			"properties": {
-				"workspace.disableCounter": {
-					"type": "boolean",
-					"description": "Disable the counter inside the statusbar item",
-					"default": false
-				},
-				"workspace.disableColoring": {
-					"type": "boolean",
-					"description": "Disable the coloring when the hidden files are visible",
-					"default": false
-				},
-				"workspace.alwaysShowToggle": {
-					"type": "boolean",
-					"description": "Always show the toggle inside the statusbar",
-					"default": true
-				},
-				"workspace.statusbarPriority": {
-					"type": "number",
-					"description": "The priority for the statubar toggle",
-					"default": 0
-				},
-				"workspace.isHidden": {
-					"type": "boolean",
-					"description": "Are the files hidden or not",
-					"default": true
-				}
-			}
-		}
-	}
+  "name": "hidefiles",
+  "displayName": "hidefiles",
+  "description": "A more focused view on your files",
+  "version": "1.1.4",
+  "keywords": [
+    "fooxly",
+    "vscode",
+    "code",
+    "focus",
+    "sidebar",
+    "workspace",
+    "file",
+    "files",
+    "folder",
+    "folders",
+    "hide",
+    "hidden",
+    "show"
+  ],
+  "homepage": "https://github.com/EvStorM/hidefiles",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EvStorM/hidefiles.git"
+  },
+  "license": "MIT",
+  "main": "./out/extension.js",
+  "engines": {
+    "yarn": ">=1",
+    "node": ">=12",
+    "vscode": "^1.38.0"
+  },
+  "scripts": {
+    "package": "yarn run compile && vsce package --yarn -o extension.vsix",
+    "compile": "tsc -p ./ && yarn minify",
+    "minify": "uglifyjs-folder -e -x .js -o out out",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "yarn run compile && node ./node_modules/vscode/bin/test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^15.6.1",
+    "tslint": "^6.1.3",
+    "typescript": "^4.3.2",
+    "uglify-js": "^3.13.8",
+    "uglifyjs-folder": "^2.0.0",
+    "vsce": "^1.88.0",
+    "vscode": "^1.1.37"
+  },
+  "publisher": "Fooxly",
+  "icon": "assets/icon.png",
+  "galleryBanner": {
+    "color": "#FAFAFA",
+    "theme": "light"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "hidefiles.toggle",
+        "title": "hide file/folder"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "hidefiles.toggleFocus",
+        "key": "ctrl+shift+K",
+        "mac": "cmd+shift+K"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "hidefiles.toggle",
+          "group": "hidefiles"
+        }
+      ]
+    },
+    "colors": [
+      {
+        "id": "hidefiles.hiddenColor",
+        "description": "Color shown when the hidden files are visible",
+        "defaults": {
+          "dark": "#E06256",
+          "light": "#E06256",
+          "highContrast": "#FF0000"
+        }
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "hidefiles",
+      "properties": {
+        "hidefiles.disableCounter": {
+          "type": "boolean",
+          "description": "Disable the counter inside the statusbar item",
+          "default": false
+        },
+        "hidefiles.disableColoring": {
+          "type": "boolean",
+          "description": "Disable the coloring when the hidden files are visible",
+          "default": false
+        },
+        "hidefiles.alwaysShowToggle": {
+          "type": "boolean",
+          "description": "Always show the toggle inside the statusbar",
+          "default": true
+        },
+        "hidefiles.statusbarPriority": {
+          "type": "number",
+          "description": "The priority for the statubar toggle",
+          "default": 0
+        },
+        "hidefiles.isHidden": {
+          "type": "boolean",
+          "description": "Are the files hidden or not",
+          "default": true
+        }
+      }
+    }
+  }
 }
