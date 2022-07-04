@@ -1,14 +1,11 @@
 import * as vscode from 'vscode'
-import Main from './Main'
+import Hider from './hider'
 
-var main: Main
-export function activate(context: vscode.ExtensionContext) {
-	main = new Main(context)
-	vscode.workspace.onDidChangeConfiguration(e => {
-		main.configUpdate(e)
-	})
+var hider: Hider
+export function activate(ctx: vscode.ExtensionContext) {
+	hider = new Hider(ctx)
 }
 
 export function deactivate() {
-	main.destroy()
+	hider.destroy()
 }

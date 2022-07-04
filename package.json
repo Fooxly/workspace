@@ -103,6 +103,11 @@
 			"type": "object",
 			"title": "Workspace",
 			"properties": {
+				"workspace.multiRootWorkspaces": {
+					"type": "boolean",
+					"description": "Toggle multi-root workspace support. Due to limitations in vscode, when an item is hidden in one workspace folder, it is hidden for all workspaces.",
+					"default": true
+				},
 				"workspace.disableCounter": {
 					"type": "boolean",
 					"description": "Disable the counter inside the statusbar item",

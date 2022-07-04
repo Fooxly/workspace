@@ -1,11 +1,14 @@
 import { Disposable, ExtensionContext, commands, workspace, window, StatusBarAlignment, StatusBarItem, ConfigurationTarget, ThemeColor, ConfigurationChangeEvent, WorkspaceConfiguration, Uri } from 'vscode'
 import * as fs from 'fs'
 
-export default class Main {
+export default class Hider {
   public context: ExtensionContext
   private cmds: Map<string, Disposable> = new Map<string, Disposable>()
 
-  private inHiddenSpace: boolean = false
+  // status bar state for hiding or showing
+  // all normally hidden files at `files.exclude`
+  private isHidden: boolean = false
+  // the status bar item that switches `isHidden` on or off
   private switch?: StatusBarItem
   private config: WorkspaceConfiguration
 
@@ -16,7 +19,6 @@ export default class Main {
   }
 
   private async Initialize() {
-
     this.registerCommand('workspace.toggle', (_, files) => {
       const excluded = this.config.inspect('files.exclude')
       let items: any = undefined
@@ -43,11 +45,11 @@ export default class Main {
     this.registerCommand('workspace.toggleFocus', () => {
       this.toggleFocus()
     })
-    
+
     ;(async () => {
       const isHidden = this.config.inspect('workspace.isHidden')
       if (isHidden && isHidden.workspaceValue !== undefined) {
-        this.inHiddenSpace = !(isHidden.workspaceValue as boolean)
+        this.isHidden = !(isHidden.workspaceValue as boolean)
       } else {
         const excluded = this.config.inspect('files.exclude')
         if (excluded && excluded.workspaceValue && Object.keys(<any>excluded.workspaceValue).length) {
@@ -56,6 +58,10 @@ export default class Main {
       }
       this.update()
     })()
+
+    workspace.onDidChangeConfiguration(e => {
+      this.configUpdate(e)
+    })
   }
 
   public destroy () {
@@ -78,21 +84,25 @@ export default class Main {
 
   private toggleFile(items: any, file: Uri): any {
     const newItems = items
-    const path = workspace.asRelativePath(file.path)
+    const path = this.pathResolve(file.path)
+    if (!path) return;
+
     // check if file is inside the files.exclude
     if (Object.keys(newItems).includes(path)) {
       // remove it from the files.exclude
       delete newItems[path]
     } else {
       // else: add file to files.exclude
-      newItems[path] = !this.inHiddenSpace
+      newItems[path] = !this.isHidden
     }
     return newItems
   }
 
   private toggleFolder(items: any, folder: Uri): any {
     const newItems = items
-    const path = workspace.asRelativePath(folder.path)
+    const path = this.pathResolve(folder.path);
+    if (!path) return;
+
     // check if folder is inside the files.exclude
     if (Object.keys(newItems).includes(path)) {
       // remove the folder and sub files from the files.exclude
@@ -103,7 +113,7 @@ export default class Main {
       }
     } else {
       // else: add folder to files.exclude
-      newItems[path] = !this.inHiddenSpace
+      newItems[path] = !this.isHidden
     }
     return newItems
   }
@@ -129,7 +139,7 @@ export default class Main {
       this.switch.text = '$(archive)'
     }
 
-    if(this.inHiddenSpace) {
+    if(this.isHidden) {
       this.switch.tooltip = 'Hide hidden files'
       if (this.config.get('workspace.disableColoring', false) === false) {
         this.switch.color = new ThemeColor('workspace.hiddenColor')
@@ -158,13 +168,13 @@ export default class Main {
     // update the files
     if (files) {
       for(const key in files) {
-        files[key] = this.inHiddenSpace
+        files[key] = this.isHidden
       }
     }
-    // switch hidden space boolean
-    this.inHiddenSpace = !this.inHiddenSpace
+    // switch is hidden boolean
+    this.isHidden = !this.isHidden
     // FIXME: flickering of statusbar happens here somewhere (when the config is not updated the statusbar does not flicker)
-    await this.config.update('workspace.isHidden', !this.inHiddenSpace, ConfigurationTarget.Workspace)
+    await this.config.update('workspace.isHidden', !this.isHidden, ConfigurationTarget.Workspace)
     // update the value (this also updates the statusbar item)
     await this.config.update('files.exclude', files ?? undefined, ConfigurationTarget.Workspace)
   }
@@ -174,5 +184,25 @@ export default class Main {
     let dis = commands.registerCommand(uri, callback)
     this.context.subscriptions.push(dis)
     this.cmds.set(uri, dis)
+  }
+
+  // resolve path correctly for both single and multiple workspace roots
+  // according to how `file.excludes` requires it to be.
+  private pathResolve(full_path: string): string | undefined {
+    // When there are multiple workspaces folders [`path`] has
+    // the workspace folder's name prepended
+    let path = workspace.asRelativePath(full_path);
+    const workspace_num = workspace.workspaceFolders?.length || 0;
+
+    if (workspace_num > 1 && this.config.get("workspace.multiRootWorkspaces")) {
+      // remove the workspace's prepended name
+      // NOTE: has the additional effect of hiding the file
+      // in every workspace folder
+      // TODO: Add a setting to toggle this behaviour?
+      path = path.slice(path.indexOf('/') + 1)
+      if (path === "") return;
+    }
+
+    return path;
   }
 }
