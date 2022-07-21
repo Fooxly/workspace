@@ -3,7 +3,7 @@
 	"displayName": "Workspace",
 	"author": "Fooxly <hello@fooxly.com> (https://developer.fooxly.com/)",
 	"description": "A more focused view on your files",
-	"version": "1.1.3",
+	"version": "1.1.4",
 	"keywords": [
 		"fooxly",
 		"vscode",
@@ -29,30 +29,38 @@
 		"email": "bugs@fooxly.com"
 	},
 	"license": "MIT",
-	"main": "./out/extension.js",
+	"main": "./dist/extension.js",
 	"engines": {
 		"yarn": ">=1",
 		"node": ">=12",
-		"vscode": "^1.38.0"
+		"vscode": "^1.69.0"
 	},
 	"scripts": {
-		"package": "yarn run compile && vsce package --yarn -o extension.vsix",
-		"compile": "tsc -p ./ && yarn minify",
-		"minify": "uglifyjs-folder -e -x .js -o out out",
-		"watch": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"test": "yarn run compile && node ./node_modules/vscode/bin/test"
+		"vscode:prepublish": "yarn run package",
+		"compile": "webpack",
+		"watch": "webpack --watch",
+		"package": "webpack --mode production --devtool hidden-source-map",
+		"compile-tests": "tsc -p . --outDir out",
+		"watch-tests": "tsc -p . -w --outDir out",
+		"pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
 	},
-	"dependencies": {},
 	"devDependencies": {
-		"@types/mocha": "^8.2.2",
-		"@types/node": "^15.6.1",
-		"tslint": "^6.1.3",
-		"typescript": "^4.3.2",
-		"uglify-js": "^3.13.8",
-		"uglifyjs-folder": "^2.0.0",
-		"vsce": "^1.88.0",
-		"vscode": "^1.1.37"
+		"@types/vscode": "^1.69.0",
+		"@types/glob": "^7.2.0",
+		"@types/mocha": "^9.1.1",
+		"@types/node": "16.x",
+		"@typescript-eslint/eslint-plugin": "^5.30.0",
+		"@typescript-eslint/parser": "^5.30.0",
+		"eslint": "^8.18.0",
+		"glob": "^8.0.3",
+		"mocha": "^10.0.0",
+		"typescript": "^4.7.4",
+		"ts-loader": "^9.3.1",
+		"webpack": "^5.73.0",
+		"webpack-cli": "^4.10.0",
+		"@vscode/test-electron": "^2.1.5"
 	},
 	"publisher": "Fooxly",
 	"icon": "assets/icon.png",
@@ -69,8 +77,16 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "workspace.toggle",
-				"title": "Toggle"
+				"command": "workspace.toggleFile",
+				"title": "Toggle File Visibility"
+			},
+			{
+				"command": "workspace.toggleFolder",
+				"title": "Toggle Folder Visibility"
+			},
+			{
+				"command": "workspace.toggleFocus",
+				"title": "Workspace: Toggle Focus Mode"
 			}
 		],
 		"keybindings": [
@@ -83,8 +99,14 @@
 		"menus": {
 			"explorer/context": [
 				{
-					"command": "workspace.toggle",
-					"group": "workspace"
+					"command": "workspace.toggleFolder",
+					"group": "workspace",
+					"when": "explorerResourceIsFolder"
+				},
+				{
+					"command": "workspace.toggleFile",
+					"group": "workspace",
+					"when": "!explorerResourceIsFolder"
 				}
 			]
 		},
@@ -93,9 +115,9 @@
 				"id": "workspace.hiddenColor",
 				"description": "Color shown when the hidden files are visible",
 				"defaults": {
-					"dark": "#E06256",
-					"light": "#E06256",
-					"highContrast": "#FF0000"
+					"dark": "#00ff00",
+					"light": "#00ff00",
+					"highContrast": "#00ff00"
 				}
 			}
 		],
@@ -103,11 +125,6 @@
 			"type": "object",
 			"title": "Workspace",
 			"properties": {
-				"workspace.multiRootWorkspaces": {
-					"type": "boolean",
-					"description": "Toggle multi-root workspace support. Due to limitations in vscode, when an item is hidden in one workspace folder, it is hidden for all workspaces.",
-					"default": true
-				},
 				"workspace.disableCounter": {
 					"type": "boolean",
 					"description": "Disable the counter inside the statusbar item",
@@ -131,7 +148,7 @@
 				"workspace.isHidden": {
 					"type": "boolean",
 					"description": "Are the files hidden or not",
-					"default": true
+					"default": false
 				}
 			}
 		}

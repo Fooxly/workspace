@@ -65,7 +65,6 @@ A package by [Fooxly](https://www.fooxly.com).
 | workspace.disableColoring            | boolean   | false                 | true, false            | Disable the coloring when the hidden files are visible |
 | workspace.alwaysShowToggle           | boolean   | true                  | true, false            | Always show the toggle inside the statusbar |
 | workspace.statusbarPriority          | number    | 0                     | -                      | The priority for the statubar toggle |
-| workspace.multiRootWorkspaces        | boolean   | true                  | true, false            | Toggle multi-root workspace support |
 
 ## 🎨 Theming
 
