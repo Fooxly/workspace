@@ -152,20 +152,15 @@ export default class Hider {
         for (const space of workspace.workspaceFolders) {
             const config = await this.getConfiguration(space);
             configs.set(space.name ?? '', config);
-        }
-
-        // If there is one workspace with isHidden set to false, all the workspace folders should be synced with that
-        for (const space of workspace.workspaceFolders) {
-            const config = configs.get(space.name ?? '') ?? {};
+            // If there is one workspace with isHidden set to false, all the workspace folders should be synced with that
             if (config.hasOwnProperty('workspace.isHidden') && config['workspace.isHidden'] === false) {
                 shouldBeShown = true;
-                break;
             }
         }
 
         // Update all the workspace folder settings if they have the files.exclude property
         for (const space of workspace.workspaceFolders) {
-            const config = configs.get(space.name ?? '') ?? {};
+            const config = configs.get(space.name ?? '');
             if (config.hasOwnProperty('files.exclude')) {
                 config['workspace.isHidden'] = !shouldBeShown;
                 for (const file in config['files.exclude']) {

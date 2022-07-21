@@ -16,12 +16,9 @@ ext install fooxly.workspace
 
 # 🚀 Recently Added
 
-* Multiple files/folder selection
-* Theme coloring for the active state
-* Option to disable the theme coloring
-* Counter for the number of entries listed
-* Option to disable the counter
-* Optimalization to the add and remove functions
+* Multi-root workspace support
+* Optimized syncing of data between workspaces
+* Optimized performance
 
 ## ❤&nbsp; Support us
 
