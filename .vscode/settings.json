@@ -1,22 +1,22 @@
 {
-    "search.exclude": {
-        "out": true // set this to `false` to include "out" folder in search results
-    },
-    // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
-    "typescript.tsc.autoDetect": "off",
-    "files.exclude": {
-        "dist": false,
-        ".github": false,
-        ".vscode": false,
-        ".vscode-test": false,
-        "node_modules": false,
-        ".babelrc": false,
-        ".eslintrc.json": false,
-        ".gitignore": false,
-        ".vscodeignore": false,
-        "tsconfig.json": false,
-        "tslint.json": false,
-        "yarn.lock": false
-    },
-    "workspace.isHidden": false
+  "search.exclude": {
+    "out": true // set this to `false` to include "out" folder in search results
+  },
+  // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
+  "typescript.tsc.autoDetect": "off",
+  "files.exclude": {
+    "dist": false,
+    ".github": false,
+    ".vscode": false,
+    ".vscode-test": false,
+    "node_modules": false,
+    ".babelrc": false,
+    ".eslintrc.json": false,
+    ".gitignore": false,
+    ".vscodeignore": false,
+    "tsconfig.json": false,
+    "tslint.json": false,
+    "yarn.lock": false
+  },
+  "workspace.isHidden": false
 }

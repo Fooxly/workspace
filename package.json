@@ -3,7 +3,7 @@
 	"displayName": "Workspace",
 	"author": "Fooxly <hello@fooxly.com> (https://developer.fooxly.com/)",
 	"description": "A more focused view on your files",
-	"version": "1.1.5",
+	"version": "1.1.6",
 	"keywords": [
 		"fooxly",
 		"vscode",
