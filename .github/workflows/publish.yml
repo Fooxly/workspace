@@ -15,7 +15,7 @@ jobs:
           node-version: 14
       - run: yarn install
       - run: yarn run package
-      - uses: HaaLeo/publish-vscode-extension@v0
+      - uses: HaaLeo/publish-vscode-extension@v1
         with:
           pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
           packagePath: ''
