@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.2.0] - 2022-07-21
+
+### Added
+
+- File explorer coloring for hidden files
+
 ## [1.1.6] - 2022-07-21
 
 ### Added
