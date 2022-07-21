@@ -1,4 +1,5 @@
-import { Disposable, ExtensionContext, commands, workspace, window, StatusBarAlignment, StatusBarItem, ConfigurationTarget, ThemeColor, ConfigurationChangeEvent, WorkspaceConfiguration, Uri, WorkspaceFolder } from 'vscode';
+import { Disposable, ExtensionContext, commands, workspace, window, StatusBarAlignment, StatusBarItem, ThemeColor, ConfigurationChangeEvent, Uri, WorkspaceFolder } from 'vscode';
+import { parse, stringify } from 'comment-json';
 
 export default class Hider {
     public context: ExtensionContext;
@@ -45,8 +46,7 @@ export default class Hider {
         return new Promise((resolve) => {
             workspace.fs.readFile(Uri.file(`${folder.uri.fsPath}/.vscode/settings.json`)).then((readData) => {
                 try {
-                    const trailingCommaRegex = /\,(?!\s*?[\{\[\"\'\w])/g;
-                    const settings = JSON.parse(Buffer.from(readData).toString('utf8').replace(trailingCommaRegex, ''));
+                    const settings = parse(Buffer.from(readData).toString('utf8'));
                     return settings ?? {};
                 } catch (err) {
                     return {};
@@ -61,7 +61,7 @@ export default class Hider {
             const uri = Uri.file(`${folder.uri.fsPath}/.vscode/settings.json`);
             workspace.fs.stat(uri).then(async () => {
                 // Write to the config file
-                await workspace.fs.writeFile(uri, Buffer.from(JSON.stringify(config, null, 2)));
+                await workspace.fs.writeFile(uri, Buffer.from(stringify(config, null, 2)));
                 resolve();
             }, async () => {
                 if (!Object.keys(config)?.length) {
@@ -70,7 +70,7 @@ export default class Hider {
                 }
                 await workspace.fs.createDirectory(Uri.file(`${folder.uri.fsPath}/.vscode`));
                 // Write to the config file
-                await workspace.fs.writeFile(uri, Buffer.from(JSON.stringify(config, null, 2)));
+                await workspace.fs.writeFile(uri, Buffer.from(stringify(config, null, 2)));
                 resolve();
             });
         });
