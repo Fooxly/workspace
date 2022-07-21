@@ -3,7 +3,7 @@
 	"displayName": "Workspace",
 	"author": "Fooxly <hello@fooxly.com> (https://developer.fooxly.com/)",
 	"description": "A more focused view on your files",
-	"version": "1.1.6",
+	"version": "1.2.0",
 	"keywords": [
 		"fooxly",
 		"vscode",
@@ -110,6 +110,15 @@
 			{
 				"id": "workspace.hiddenColor",
 				"description": "Color shown when the hidden files are visible",
+				"defaults": {
+					"dark": "#e600ff",
+					"light": "#e600ff",
+					"highContrast": "#e600ff"
+				}
+			},
+			{
+				"id": "workspace.hiddenButtonColor",
+				"description": "Color shown on the statusbar button when the hidden files are visible",
 				"defaults": {
 					"dark": "#00ff00",
 					"light": "#00ff00",

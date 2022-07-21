@@ -19,6 +19,7 @@ ext install fooxly.workspace
 * Multi-root workspace support
 * Optimized syncing of data between workspaces
 * Optimized performance
+* Coloring for the file explorer to make the hidden files / folders pop when visible
 
 ## ❤&nbsp; Support us
 
@@ -67,11 +68,8 @@ A package by [Fooxly](https://www.fooxly.com).
 
 | property              | description |
 | ---                   | ---         |
-| workspace.hiddenColor | The color used for when the hidden entries are visible. This is to easily show users that their hidden files are visible |
-
-## Future plans
-
-* Change the color of the filename to gray when viewing the hidden files / folders
+| workspace.hiddenColor | Used in the explorer file list when the hidden entries are visible. This makes it easy for you to spot the hidden files |
+| workspace.hiddenButtonColor | Used on the statusbar button when the hidden entries are visible. This makes it easy for you to see if your hidden files are visible |
 
 ## License
 
