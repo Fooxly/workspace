@@ -58,10 +58,11 @@ export default class Hider {
     // Update the settings.json file for the given workspace
     private writeConfig (config: any, folder: WorkspaceFolder) {
         return new Promise<void>((resolve) => {
+            const indentationSize = workspace.getConfiguration('editor').get('tabSize', 4);
             const uri = Uri.file(`${folder.uri.fsPath}/.vscode/settings.json`);
             workspace.fs.stat(uri).then(async () => {
                 // Write to the config file
-                await workspace.fs.writeFile(uri, Buffer.from(stringify(config, null, 2)));
+                await workspace.fs.writeFile(uri, Buffer.from(stringify(config, null, indentationSize)));
                 resolve();
             }, async () => {
                 if (!Object.keys(config)?.length) {
@@ -70,7 +71,7 @@ export default class Hider {
                 }
                 await workspace.fs.createDirectory(Uri.file(`${folder.uri.fsPath}/.vscode`));
                 // Write to the config file
-                await workspace.fs.writeFile(uri, Buffer.from(stringify(config, null, 2)));
+                await workspace.fs.writeFile(uri, Buffer.from(stringify(config, null, indentationSize)));
                 resolve();
             });
         });
@@ -121,8 +122,9 @@ export default class Hider {
             }
 
             // Update the config for this space
-            this.writeConfig(config, space);
+            await this.writeConfig(config, space);
         }
+        await this.syncSwitch();
     }
 
     // Localize the given path to the correct workspace
