@@ -36,10 +36,11 @@
 		"vscode": "^1.69.0"
 	},
 	"scripts": {
-		"vscode:prepublish": "yarn run package",
+		"package": "vsce package --yarn -o extension.vsix",
+		"vscode:prepublish": "yarn run prepackage",
 		"compile": "webpack",
 		"watch": "webpack --watch",
-		"package": "webpack --mode production --devtool hidden-source-map && vsce package --yarn -o extension.vsix",
+		"prepackage": "webpack --mode production --devtool hidden-source-map",
 		"lint": "eslint src --ext ts"
 	},
 	"devDependencies": {
