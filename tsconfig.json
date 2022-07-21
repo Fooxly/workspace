@@ -1,17 +1,13 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "es5",
+		"target": "ES2020",
+		"lib": [
+			"ES2020"
+		],
+		"sourceMap": true,
 		"rootDir": "src",
-		"outDir": "out",
-		"lib": ["es6"],
 		"strict": true,
-		"sourceMap": false,
-		"removeComments": true,
-		"noFallthroughCasesInSwitch": true
-	},
-	"exclude": [
-		"node_modules",
-		".vscode-test"
-	]
+	}
 }
+

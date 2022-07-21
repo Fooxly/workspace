@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.1.4] - 2022-07-21
+
+### Added
+
+- Multi-root workspace support
+
 ## [1.1.1] - 2020-04-08
 
 ### Added

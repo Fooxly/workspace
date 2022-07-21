@@ -1,5 +1,7 @@
-/node_modules
-/out
-/.vscode-test
+node_modules/
+out/
+dist/
+.vscode-test/
 .DS_Store
 *.vsix
+package-lock.json
