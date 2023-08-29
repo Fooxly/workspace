@@ -1,0 +1,12 @@
+{
+    "commands.workspace.toggleFile": "Toggle File Visibility",
+    "commands.workspace.toggleFolder": "Toggle Folder Visibility",
+    "commands.workspace.toggleFocus": "Workspace: Toggle Focus Mode",
+    "settings.workspace.explorer.directlyHidden": "This color is given to files in the explorer tab which are hidden when workspace is active. This color specifies that the the file / folder is directly hidden",
+    "settings.workspace.explorer.parentHidden": "This color is given to files in the explorer tab which are hidden when workspace is active. This color specifies that the parent folder is hidden",
+    "settings.workspace.statusbar.buttonVisible": "This color is given to the statusbar toggle when the hidden files are visible",
+    "settings.workspace.disableCounter": "Disable the counter inside the statusbar item",
+    "settings.workspace.disableColoring": "Disable the coloring of files in the file explorer when the hidden files/folders are visible",
+    "settings.workspace.alwaysShowToggle": "Always show the toggle inside the statusbar",
+    "settings.workspace.statusbarPriority": "The priority for the statubar toggle"
+}

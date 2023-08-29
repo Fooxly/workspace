@@ -1,6 +1,5 @@
-import { ConfigurationTarget, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, ThemeColor, Uri, commands, window, workspace } from 'vscode';
+import { Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, ThemeColor, Uri, commands, l10n, window, workspace } from 'vscode';
 import { globalState } from '../state';
-import { DEFAULT_EXCLUDE_PATTERNS } from '../utils/consts';
 import { isHidden, localizePath } from '../utils/files-finder';
 import { getWorkspaceConfig } from '../utils/config';
 
@@ -65,7 +64,7 @@ export class Toggle {
         }
         // Set the theming
         this.switch.text = `$(archive)${!workspaceConfig.get('disableCounter', false) ? ` ${activePatterns}` : ''}`;
-        this.switch.tooltip = inFocusMode ? 'Show hidden files' : 'Enable focus mode';
+        this.switch.tooltip = inFocusMode ? l10n.t('Show hidden files') : l10n.t('Enable focus mode');
         this.switch.color = workspaceConfig.get('disableColoring', false) || inFocusMode ? undefined : new ThemeColor('workspace.statusbar.buttonVisible');
 
         if (!activePatterns && !workspaceConfig.get('alwaysShowToggle', true)) {
@@ -107,7 +106,7 @@ export class Toggle {
             }
 
             if (folder.uri.fsPath === file.fsPath) {
-                window.showWarningMessage('You cannot hide the root folder');
+                window.showWarningMessage(l10n.t('You cannot hide the root folder'));
                 continue;
             }
 
@@ -155,7 +154,7 @@ export class Toggle {
 
     private toggleFocus() {
         if (!globalState.workspaces.length) {
-            window.showErrorMessage('The Fooxly Workspace extension can only be used within a workspace');
+            window.showErrorMessage(l10n.t('The Fooxly Workspace extension can only be used within a workspace'));
             return;
         }
 
@@ -202,16 +201,16 @@ export class Toggle {
                 const file = Object.keys(filesHiddenByPattern[folderPath])[0];
                 const pattern = filesHiddenByPattern[folderPath][file];
                 const { localPath } = localizePath(Uri.file(file));
-                message = `The item "${file.replace(folder.uri.fsPath, '')}" is already hidden by the pattern "${pattern}, Please resolve this conflict before hiding it with the pattern "${localPath}"`;
-                options = [settingsFileExists ? 'Open settings.json' : undefined, 'Delete Pattern'].filter(Boolean) as string[];
+                message = l10n.t('The item "{0}" is already hidden by the pattern "{1}", Please resolve this conflict before hiding it with the pattern "{2}"', file.replace(folder.uri.fsPath, ''), pattern, localPath);
+                options = [settingsFileExists ? l10n.t('Open settings.json') : undefined, l10n.t('Delete Pattern')].filter(Boolean) as string[];
             } else {
-                message = `Multiple items are already hidden by existing pattern(s) in your settings.json. Please resolve these conflicts before hiding them.`;
-                options = [settingsFileExists ? 'Open settings.json' : undefined, 'Delete Pattern(s)'].filter(Boolean) as string[];
+                message = l10n.t('Multiple items are already hidden by existing pattern(s) in your settings.json. Please resolve these conflicts before hiding them.');
+                options = [settingsFileExists ? l10n.t('Open settings.json') : undefined, l10n.t('Delete Pattern(s)')].filter(Boolean) as string[];
             }
 
             window.showErrorMessage(message, ...options).then((choice) => {
                 switch (choice) {
-                    case 'Open settings.json': {
+                    case l10n.t('Open settings.json'): {
                         void (async () => {
                             const settingsUri = Uri.joinPath(folder.uri, '.vscode', 'settings.json');
                             try {
@@ -221,7 +220,7 @@ export class Toggle {
                         })();
                         return;
                     }
-                    case 'Delete Pattern': {
+                    case l10n.t('Delete Pattern'): {
                         const file = Object.keys(filesHiddenByPattern[folderPath])[0];
                         const pattern = filesHiddenByPattern[folderPath][file];
                         const config = getWorkspaceConfig(folder);
@@ -229,7 +228,7 @@ export class Toggle {
                         workspace.getConfiguration('files', folder).update('exclude', config);
                         return;
                     }
-                    case 'Delete Pattern(s)': {
+                    case l10n.t('Delete Pattern(s)'): {
                         const config = getWorkspaceConfig(folder);
                         for (const pattern of Object.values(filesHiddenByPattern[folderPath])) {
                             delete config[pattern];

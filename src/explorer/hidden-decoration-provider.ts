@@ -1,4 +1,4 @@
-import { Disposable, FileDecorationProvider, ThemeColor, Uri, WorkspaceConfiguration, window, workspace } from 'vscode';
+import { Disposable, FileDecorationProvider, ThemeColor, Uri, WorkspaceConfiguration, l10n, window, workspace } from 'vscode';
 import { globalState } from '../state';
 import { isHidden } from '../utils/files-finder';
 
@@ -38,7 +38,7 @@ export class HiddenDecorationProvider implements FileDecorationProvider {
 
                 const base = {
                     badge: '🙈',
-                    tooltip: 'This item is set to be hidden',
+                    tooltip: l10n.t('This item is set to be hidden'),
                 };
 
                 if (this.workspaceConfig.get('disableColoring', false)) {

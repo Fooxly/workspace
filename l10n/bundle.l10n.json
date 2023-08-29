@@ -1,0 +1,12 @@
+{
+  "Show hidden files": "Show hidden files",
+  "Enable focus mode": "Enable focus mode",
+  "You cannot hide the root folder": "You cannot hide the root folder",
+  "The Fooxly Workspace extension can only be used within a workspace": "The Fooxly Workspace extension can only be used within a workspace",
+  "The item \"{0}\" is already hidden by the pattern \"{1}\", Please resolve this conflict before hiding it with the pattern \"{2}\"": "The item \"{0}\" is already hidden by the pattern \"{1}\", Please resolve this conflict before hiding it with the pattern \"{2}\"",
+  "Open settings.json": "Open settings.json",
+  "Delete Pattern": "Delete Pattern",
+  "Multiple items are already hidden by existing pattern(s) in your settings.json. Please resolve these conflicts before hiding them.": "Multiple items are already hidden by existing pattern(s) in your settings.json. Please resolve these conflicts before hiding them.",
+  "Delete Pattern(s)": "Delete Pattern(s)",
+  "This item is set to be hidden": "This item is set to be hidden"
+}

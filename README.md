@@ -8,17 +8,17 @@
 ext install fooxly.workspace
 ```
 
-[![Version](https://vsmarketplacebadges.dev/version-short/fooxly.workspace.svg)](https://marketplace.visualstudio.com/items?itemName=fooxly.workspace)
-[![Installs](https://vsmarketplacebadges.dev/installs-short/fooxly.workspace.svg)](https://marketplace.visualstudio.com/items?itemName=fooxly.workspace)
-[![Ratings](https://vsmarketplacebadges.dev/rating-short/fooxly.workspace.svg)](https://marketplace.visualstudio.com/items?itemName=fooxly.workspace)
+[![Version](https://img.shields.io/vscode-marketplace/v/fooxly.workspace.svg?style=flat-square&label=vscode%20marketplace)](https://marketplace.visualstudio.com/items?itemName=fooxly.workspace)
+[![Installs](https://img.shields.io/vscode-marketplace/i/fooxly.workspace.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=fooxly.workspace)
+[![Ratings](https://img.shields.io/vscode-marketplace/r/fooxly.workspace.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=fooxly.workspace)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/Fooxly/workspace/blob/master/LICENSE)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
 # 🚀 Recently Added
 
 * Multi-root workspace support
-* Optimized syncing of data between workspaces
 * Optimized performance
+* More insights into which files are hidden and how to bring them back
 * Coloring for the file explorer to make the hidden files / folders pop when visible
 
 ## ❤&nbsp; Support us
@@ -68,8 +68,9 @@ A package by [Fooxly](https://www.fooxly.com).
 
 | property              | description |
 | ---                   | ---         |
-| workspace.hiddenColor | Used in the explorer file list when the hidden entries are visible. This makes it easy for you to spot the hidden files |
-| workspace.hiddenButtonColor | Used on the statusbar button when the hidden entries are visible. This makes it easy for you to see if your hidden files are visible |
+| workspace.explorer.directlyHidden | Used in the explorer file list when the hidden entries are visible. This makes it easy for you to spot the hidden files |
+| workspace.explorer.parentHidden | Used in the explorer file list when the hidden entries are visible. This makes items highlighted with are hidden due to their parent or other glob patterns |
+| workspace.statusbar.buttonVisible | Used on the statusbar button when the hidden entries are visible. This makes it easy for you to see if your hidden files are visible |
 
 ## License
 

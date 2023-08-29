@@ -1,5 +1,20 @@
 # Change Log
 
+## [1.3.0] - 2023-08-29
+
+### Added
+
+- Colors for items which are hidden due to their parent or other glob patterns
+- We added support for translations (currently only English is translated, we are open for PRs)
+
+### Changed
+
+- Optimized performance
+- workspace.isHidden is no longer used
+- workspace.hiddenColor is changed to workspace.explorer.directlyHidden to match workspace.explorer.parentHidden
+- Fixed an issue where the extension would rewrite the settings.json even if nothing happened
+- Events are now only fired when something related to the workspace happens and not when unrelated settings are changed
+
 ## [1.2.0] - 2022-07-21
 
 ### Added

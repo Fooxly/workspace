@@ -48,6 +48,7 @@
 		"color": "#FAFAFA",
 		"theme": "light"
 	},
+  "l10n": "./l10n",
   "categories": [
     "Other"
   ],
@@ -58,22 +59,22 @@
     "commands": [
       {
         "command": "workspace.toggleFile",
-        "title": "Toggle File Visibility"
+        "title": "%commands.workspace.toggleFile%"
       },
       {
         "command": "workspace.toggleFolder",
-        "title": "Toggle Folder Visibility"
+        "title": "%commands.workspace.toggleFolder%"
       },
       {
         "command": "workspace.toggleFocus",
-        "title": "Workspace: Toggle Focus Mode"
+        "title": "%commands.workspace.toggleFocus%"
       }
     ],
     "keybindings": [
       {
         "command": "workspace.toggleFocus",
-        "key": "ctrl+shift+'",
-        "mac": "cmd+shift+'"
+        "key": "ctrl+shift+K",
+        "mac": "cmd+shift+K"
       }
     ],
 		"menus": {
@@ -93,7 +94,7 @@
     "colors": [
       {
         "id": "workspace.explorer.directlyHidden",
-        "description": "This color is given to files in the explorer tab which are hidden when workspace is active. This color specifies that the the file / folder is directly hidden",
+        "description": "%settings.workspace.explorer.directlyHidden%",
         "defaults": {
           "dark": "#e600ff",
           "light": "#e600ff",
@@ -102,7 +103,7 @@
       },
       {
         "id": "workspace.explorer.parentHidden",
-        "description": "This color is given to files in the explorer tab which are hidden when workspace is active. This color specifies that the parent folder is hidden",
+        "description": "%settings.workspace.explorer.parentHidden%",
         "defaults": {
           "dark": "#a500b7",
           "light": "#a500b7",
@@ -111,7 +112,7 @@
       },
       {
         "id": "workspace.statusbar.buttonVisible",
-        "description": "This color is given to the statusbar toggle when the hidden files are visible",
+        "description": "%settings.workspace.statusbar.buttonVisible%",
         "defaults": {
           "dark": "#00ff00",
           "light": "#00ff00",
@@ -125,28 +126,23 @@
       "properties": {
 				"workspace.disableCounter": {
 					"type": "boolean",
-					"description": "Disable the counter inside the statusbar item",
+					"description": "%settings.workspace.disableCounter%",
 					"default": false
 				},
         "workspace.disableColoring": {
           "type": "boolean",
-          "description": "Disable the coloring of files in the file explorer when the hidden files/folders are visible",
+          "description": "%settings.workspace.disableColoring%",
           "default": false
         },
 				"workspace.alwaysShowToggle": {
 					"type": "boolean",
-					"description": "Always show the toggle inside the statusbar",
+					"description": "%settings.workspace.alwaysShowToggle%",
 					"default": true
 				},
 				"workspace.statusbarPriority": {
 					"type": "number",
-					"description": "The priority for the statubar toggle",
+					"description": "%settings.workspace.statusbarPriority%",
 					"default": 0
-				},
-				"workspace.isHidden": {
-					"type": "boolean",
-					"description": "Are the files hidden or not",
-					"default": false
 				}
       }
     }
