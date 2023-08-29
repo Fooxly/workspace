@@ -1,53 +1,54 @@
 {
   "name": "workspace",
-	"displayName": "Workspace",
-	"author": "Fooxly <hello@fooxly.com> (https://developer.fooxly.com/)",
-	"description": "A more focused view on your files",
-	"version": "1.3.0",
-	"keywords": [
-		"fooxly",
-		"vscode",
-		"code",
-		"focus",
-		"sidebar",
-		"workspace",
-		"file",
-		"files",
-		"folder",
-		"folders",
-		"hide",
-		"hidden",
-		"show"
-	],
-	"homepage": "https://github.com/Fooxly/workspace",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Fooxly/workspace.git"
-	},
-	"bugs": {
-		"url": "https://github.com/Fooxly/workspace",
-		"email": "bugs@fooxly.com"
-	},
-	"license": "MIT",
-	"main": "./dist/extension.js",
-	"engines": {
-		"yarn": ">=1",
-		"node": ">=12",
-		"vscode": "^1.69.0"
-	},
+  "displayName": "Workspace",
+  "author": "Fooxly <hello@fooxly.com> (https://developer.fooxly.com/)",
+  "description": "A more focused view on your files",
+  "version": "1.3.0",
+  "keywords": [
+    "fooxly",
+    "vscode",
+    "code",
+    "focus",
+    "sidebar",
+    "workspace",
+    "file",
+    "files",
+    "folder",
+    "folders",
+    "hide",
+    "hidden",
+    "show"
+  ],
+  "homepage": "https://github.com/Fooxly/workspace",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Fooxly/workspace.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Fooxly/workspace",
+    "email": "bugs@fooxly.com"
+  },
+  "license": "MIT",
+  "main": "./dist/extension.js",
+  "engines": {
+    "yarn": ">=1",
+    "node": ">=12",
+    "vscode": "^1.69.0"
+  },
   "scripts": {
-    "vscode:prepublish": "yarn run package",
+    "package": "vsce package --yarn -o extension.vsix",
+    "vscode:prepublish": "yarn run prepackage",
     "compile": "webpack",
     "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
+    "prepackage": "webpack --mode production --devtool hidden-source-map",
     "lint": "eslint src --ext ts"
   },
-	"publisher": "Fooxly",
-	"icon": "assets/icon.png",
-	"galleryBanner": {
-		"color": "#FAFAFA",
-		"theme": "light"
-	},
+  "publisher": "Fooxly",
+  "icon": "assets/icon.png",
+  "galleryBanner": {
+    "color": "#FAFAFA",
+    "theme": "light"
+  },
   "l10n": "./l10n",
   "categories": [
     "Other"
@@ -77,20 +78,20 @@
         "mac": "cmd+shift+K"
       }
     ],
-		"menus": {
-			"explorer/context": [
-				{
-					"command": "workspace.toggleFolder",
-					"group": "workspace",
-					"when": "explorerResourceIsFolder"
-				},
-				{
-					"command": "workspace.toggleFile",
-					"group": "workspace",
-					"when": "!explorerResourceIsFolder"
-				}
-			]
-		},
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "workspace.toggleFolder",
+          "group": "workspace",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "workspace.toggleFile",
+          "group": "workspace",
+          "when": "!explorerResourceIsFolder"
+        }
+      ]
+    },
     "colors": [
       {
         "id": "workspace.explorer.directlyHidden",
@@ -124,26 +125,26 @@
       "type": "object",
       "title": "Workspace",
       "properties": {
-				"workspace.disableCounter": {
-					"type": "boolean",
-					"description": "%settings.workspace.disableCounter%",
-					"default": false
-				},
+        "workspace.disableCounter": {
+          "type": "boolean",
+          "description": "%settings.workspace.disableCounter%",
+          "default": false
+        },
         "workspace.disableColoring": {
           "type": "boolean",
           "description": "%settings.workspace.disableColoring%",
           "default": false
         },
-				"workspace.alwaysShowToggle": {
-					"type": "boolean",
-					"description": "%settings.workspace.alwaysShowToggle%",
-					"default": true
-				},
-				"workspace.statusbarPriority": {
-					"type": "number",
-					"description": "%settings.workspace.statusbarPriority%",
-					"default": 0
-				}
+        "workspace.alwaysShowToggle": {
+          "type": "boolean",
+          "description": "%settings.workspace.alwaysShowToggle%",
+          "default": true
+        },
+        "workspace.statusbarPriority": {
+          "type": "number",
+          "description": "%settings.workspace.statusbarPriority%",
+          "default": 0
+        }
       }
     }
   },
@@ -159,6 +160,7 @@
     "mocha": "^10.2.0",
     "ts-loader": "^9.4.4",
     "typescript": "^5.1.6",
+    "vsce": "^2.15.0",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
   },
