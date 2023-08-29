@@ -1,4 +1,4 @@
-import { Disposable, WorkspaceFolder, workspace } from 'vscode';
+import { Disposable, WorkspaceFolder, commands, workspace } from 'vscode';
 import { DEFAULT_EXCLUDE_PATTERNS } from './utils/consts';
 
 export interface StateListenerProps {
@@ -38,6 +38,7 @@ export class WorkspaceState {
         if (previousValue === value) {
             return;
         }
+        commands.executeCommand('setContext', 'workspace:inFocusMode', value);
         this.onChange({ attributes: ['inFocusMode'], folder: this.folder });
     }
 
@@ -112,7 +113,6 @@ export class GlobalState {
     }
 
     private removeWorkspace(workspace: WorkspaceFolder) {
-        // TODO: deserialize some stuff?
         this.workspaceStates.delete(workspace.uri.fsPath);
         this.folders.delete(workspace.uri.fsPath);
     }
@@ -131,8 +131,11 @@ export class GlobalState {
     }
 
     public on(event: 'change', listener: (props?: StateListenerProps) => void) {
-        this.changeListeners.add(listener);
-        return () => this.changeListeners.delete(listener);
+        if (event === 'change') {
+            this.changeListeners.add(listener);
+            return () => this.changeListeners.delete(listener);
+        }
+        return () => {};
     }
 
     public destroy () {

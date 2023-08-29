@@ -1,6 +1,8 @@
 {
-  "Show hidden files": "Show hidden files",
+  "Show hidden entries": "Show hidden entries",
   "Enable focus mode": "Enable focus mode",
+  "You need to select at least one file": "You need to select at least one file",
+  "You need to select at least one folder": "You need to select at least one folder",
   "You cannot hide the root folder": "You cannot hide the root folder",
   "The Fooxly Workspace extension can only be used within a workspace": "The Fooxly Workspace extension can only be used within a workspace",
   "The item \"{0}\" is already hidden by the pattern \"{1}\", Please resolve this conflict before hiding it with the pattern \"{2}\"": "The item \"{0}\" is already hidden by the pattern \"{1}\", Please resolve this conflict before hiding it with the pattern \"{2}\"",

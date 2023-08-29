@@ -26,12 +26,16 @@ export class Toggle {
         this.recreateSwitch();
 
         workspace.onDidChangeConfiguration((event) => {
-            if (!event.affectsConfiguration('workspace.statusbarPriority')) {
+            if (
+                !event.affectsConfiguration('workspace.statusbarPriority') &&
+                !event.affectsConfiguration('workspace.disableCounter') &&
+                !event.affectsConfiguration('workspace.alwaysShowToggle') &&
+                !event.affectsConfiguration('workspace.statusbar.buttonVisible')
+            ) {
                 return;
             }
             this.recreateSwitch();
         });
-
     }
 
     // Create the instance of the switch which we will hide / show later
@@ -47,6 +51,7 @@ export class Toggle {
         this.syncSwitch();
     }
 
+    // Update the theming and text of the switch based on the current state
     private syncSwitch() {
         // We don't want to show the button in windows which do not support workspaces
         if (!globalState.workspaces.length || !this.switch) {
@@ -64,8 +69,8 @@ export class Toggle {
         }
         // Set the theming
         this.switch.text = `$(archive)${!workspaceConfig.get('disableCounter', false) ? ` ${activePatterns}` : ''}`;
-        this.switch.tooltip = inFocusMode ? l10n.t('Show hidden files') : l10n.t('Enable focus mode');
-        this.switch.color = workspaceConfig.get('disableColoring', false) || inFocusMode ? undefined : new ThemeColor('workspace.statusbar.buttonVisible');
+        this.switch.tooltip = inFocusMode ? l10n.t('Show hidden entries') : l10n.t('Enable focus mode');
+        this.switch.color = inFocusMode ? undefined : new ThemeColor('workspace.statusbar.buttonVisible');
 
         if (!activePatterns && !workspaceConfig.get('alwaysShowToggle', true)) {
             this.switch.hide();
@@ -74,19 +79,30 @@ export class Toggle {
         }
     }
 
+    // Register the commands which we will use to toggle the files / folders
     private registerCommands() {
         this.commands.forEach((cmd) => cmd.dispose());
         this.commands = [];
 
         this.commands.push(commands.registerCommand('workspace.toggleFile', (_, files) => {
+            if (!files?.length) {
+                window.showWarningMessage(l10n.t('You need to select at least one file'));
+                return;
+            }
             this.toggleItems(files);
         }));
 
         this.commands.push(commands.registerCommand('workspace.toggleFolder', (_, folders) => {
+            if (!folders?.length) {
+                window.showWarningMessage(l10n.t('You need to select at least one folder'));
+                return;
+            }
             this.toggleItems(folders);
         }));
 
         this.commands.push(commands.registerCommand('workspace.toggleFocus', this.toggleFocus.bind(this)));
+        this.commands.push(commands.registerCommand('workspace.enableFocus', this.toggleFocus.bind(this)));
+        this.commands.push(commands.registerCommand('workspace.disableFocus', this.toggleFocus.bind(this)));
 
         this.context.subscriptions.push(...this.commands);
     }

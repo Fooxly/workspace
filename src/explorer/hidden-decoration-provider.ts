@@ -4,11 +4,22 @@ import { isHidden } from '../utils/files-finder';
 
 export class HiddenDecorationProvider implements FileDecorationProvider {
     private disposable?: Disposable;
+    private configDisposable?: Disposable;
     private workspaceConfig: WorkspaceConfiguration;
     private listeners: Set<() => void> = new Set<() => void>();
 
     constructor() {
         this.workspaceConfig = workspace.getConfiguration('workspace');
+        this.configDisposable = workspace.onDidChangeConfiguration((event) => {
+            if (
+                !event.affectsConfiguration('workspace.explorer.directlyHidden') &&
+                !event.affectsConfiguration('workspace.explorer.parentHidden') &&
+                !event.affectsConfiguration('workspace.disableColoring')
+            ) {
+                return;
+            }
+            this.reSync();
+        });
 
         this.listeners.add(globalState.on('change', (props) => {
             // We don't want to reSync the decoration provider if it is not needed
@@ -37,7 +48,7 @@ export class HiddenDecorationProvider implements FileDecorationProvider {
                 }
 
                 const base = {
-                    badge: '🙈',
+                    badge: direct ? '○' : undefined,
                     tooltip: l10n.t('This item is set to be hidden'),
                 };
 
@@ -57,6 +68,7 @@ export class HiddenDecorationProvider implements FileDecorationProvider {
 
     public reSync() {
         this.disposable?.dispose();
+        this.workspaceConfig = workspace.getConfiguration('workspace');
         this.disposable = window.registerFileDecorationProvider(this);
     }
 
@@ -65,5 +77,6 @@ export class HiddenDecorationProvider implements FileDecorationProvider {
             removeHandler();
         }
         this.disposable?.dispose();
+        this.configDisposable?.dispose();
     }
 }

@@ -33,7 +33,7 @@
   "engines": {
     "yarn": ">=1",
     "node": ">=12",
-    "vscode": "^1.69.0"
+    "vscode": "^1.81.0"
   },
   "scripts": {
     "package": "vsce package --yarn -o extension.vsix",
@@ -41,7 +41,8 @@
     "compile": "webpack",
     "watch": "webpack --watch",
     "prepackage": "webpack --mode production --devtool hidden-source-map",
-    "lint": "eslint src --ext ts"
+    "lint": "eslint src --ext ts",
+    "update-translations": "npx @vscode/l10n-dev export -o ./l10n ./src"
   },
   "publisher": "Fooxly",
   "icon": "assets/icon.png",
@@ -68,27 +69,57 @@
       },
       {
         "command": "workspace.toggleFocus",
-        "title": "%commands.workspace.toggleFocus%"
-      }
-    ],
-    "keybindings": [
+        "title": "%commands.workspace.toggleFocus%",
+        "category": "Workspace"
+      },
       {
-        "command": "workspace.toggleFocus",
-        "key": "ctrl+shift+K",
-        "mac": "cmd+shift+K"
+        "command": "workspace.disableFocus",
+        "title": "%commands.workspace.disableFocus%",
+        "category": "Workspace",
+        "enablement": "workspace:inFocusMode"
+      },
+      {
+        "command": "workspace.enableFocus",
+        "title": "%commands.workspace.enableFocus%",
+        "category": "Workspace",
+        "enablement": "!workspace:inFocusMode"
       }
     ],
+		"keybindings": [
+      {
+				"command": "workspace.enableFocus",
+				"key": "shift+ctrl+\\",
+				"mac": "shift+cmd+\\",
+        "when": "!workspace:inFocusMode"
+			},
+      {
+				"command": "workspace.disableFocus",
+				"key": "shift+ctrl+\\",
+				"mac": "shift+cmd+\\",
+        "when": "workspace:inFocusMode"
+			}
+		],
     "menus": {
       "explorer/context": [
         {
           "command": "workspace.toggleFolder",
           "group": "workspace",
-          "when": "explorerResourceIsFolder"
+          "when": "explorerResourceIsFolder && !explorerResourceIsRoot"
         },
         {
           "command": "workspace.toggleFile",
           "group": "workspace",
           "when": "!explorerResourceIsFolder"
+        },
+        {
+          "command": "workspace.disableFocus",
+          "group": "workspace",
+          "when": "explorerResourceIsRoot && workspace:inFocusMode"
+        },
+        {
+          "command": "workspace.enableFocus",
+          "group": "workspace",
+          "when": "explorerResourceIsRoot && !workspace:inFocusMode"
         }
       ]
     },
