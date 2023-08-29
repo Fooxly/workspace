@@ -1,0 +1,142 @@
+{
+  "name": "workspace",
+  "displayName": "Workspace",
+  "description": "A more focused view on your files",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.81.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "workspace.toggleFile",
+        "title": "Toggle File Visibility"
+      },
+      {
+        "command": "workspace.toggleFolder",
+        "title": "Toggle Folder Visibility"
+      },
+      {
+        "command": "workspace.toggleFocus",
+        "title": "Workspace: Toggle Focus Mode"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "workspace.toggleFocus",
+        "key": "ctrl+shift+'",
+        "mac": "cmd+shift+'"
+      }
+    ],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "workspace.toggleFolder",
+					"group": "workspace",
+					"when": "explorerResourceIsFolder"
+				},
+				{
+					"command": "workspace.toggleFile",
+					"group": "workspace",
+					"when": "!explorerResourceIsFolder"
+				}
+			]
+		},
+    "colors": [
+      {
+        "id": "workspace.explorer.directlyHidden",
+        "description": "This color is given to files in the explorer tab which are hidden when workspace is active. This color specifies that the the file / folder is directly hidden",
+        "defaults": {
+          "dark": "#e600ff",
+          "light": "#e600ff",
+          "highContrast": "#e600ff"
+        }
+      },
+      {
+        "id": "workspace.explorer.parentHidden",
+        "description": "This color is given to files in the explorer tab which are hidden when workspace is active. This color specifies that the parent folder is hidden",
+        "defaults": {
+          "dark": "#a500b7",
+          "light": "#a500b7",
+          "highContrast": "#a500b7"
+        }
+      },
+      {
+        "id": "workspace.statusbar.buttonVisible",
+        "description": "This color is given to the statusbar toggle when the hidden files are visible",
+        "defaults": {
+          "dark": "#00ff00",
+          "light": "#00ff00",
+          "highContrast": "#00ff00"
+        }
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Workspace",
+      "properties": {
+				"workspace.disableCounter": {
+					"type": "boolean",
+					"description": "Disable the counter inside the statusbar item",
+					"default": false
+				},
+        "workspace.disableColoring": {
+          "type": "boolean",
+          "description": "Disable the coloring of files in the file explorer when the hidden files/folders are visible",
+          "default": false
+        },
+				"workspace.alwaysShowToggle": {
+					"type": "boolean",
+					"description": "Always show the toggle inside the statusbar",
+					"default": true
+				},
+				"workspace.statusbarPriority": {
+					"type": "number",
+					"description": "The priority for the statubar toggle",
+					"default": 0
+				},
+				"workspace.isHidden": {
+					"type": "boolean",
+					"description": "Are the files hidden or not",
+					"default": false
+				}
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.81.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "@vscode/test-electron": "^2.3.4",
+    "eslint": "^8.47.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "minimatch": "^9.0.3"
+  }
+}
