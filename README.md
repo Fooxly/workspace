@@ -48,8 +48,8 @@ A package by [Fooxly](https://www.fooxly.com).
 ## 📕 Features
 
 * Hide specific folders and files from your project
-* View your hidden files
-* Bring back a hidden file or folder
+* View your hidden files with our statusbar toggle (or command)
+* Easily remove files from the hidden list with our explorer context menu
 
 ## 💻&nbsp; Preview
 
