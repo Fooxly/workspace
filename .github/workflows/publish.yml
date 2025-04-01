@@ -12,9 +12,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 14
-      - run: yarn install
-      - run: yarn run package
+          node-version: 20
+      - run: npm install
+      - run: npm run package:vsix
       - uses: HaaLeo/publish-vscode-extension@v1
         with:
           pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
