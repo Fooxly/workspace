@@ -1,0 +1,14 @@
+{
+    "commands.workspace.toggleFile": "Bestand weergeven",
+    "commands.workspace.toggleFolder": "Map weergeven",
+    "commands.workspace.toggleFocus": "Focus mode activeren",
+    "commands.workspace.enableFocus": "Focus mode activeren",
+    "commands.workspace.disableFocus": "Focus mode deactiveren",
+    "settings.workspace.explorer.directlyHidden": "Deze kleur wordt gegeven aan bestanden in de explorer tab die verborgen zijn wanneer de workspace actief is. Deze kleur geeft aan dat het bestand / de map direct verborgen is",
+    "settings.workspace.explorer.parentHidden": "Deze kleur wordt gegeven aan bestanden in de explorer tab die verborgen zijn wanneer de workspace actief is. Deze kleur geeft aan dat de bovenliggende map verborgen is",
+    "settings.workspace.statusbar.buttonVisible": "Deze kleur wordt gegeven aan de statusbalk toggle wanneer de verborgen bestanden zichtbaar zijn",
+    "settings.workspace.disableCounter": "De teller binnen de statusbalk item deactiveren",
+    "settings.workspace.disableColoring": "De kleuring van bestanden in de file explorer deactiveren wanneer de verborgen bestanden / mappen zichtbaar zijn",
+    "settings.workspace.alwaysShowToggle": "De toggle binnen de statusbalk altijd weergeven",
+    "settings.workspace.statusbarPriority": "De prioriteit voor de statusbalk toggle"
+}

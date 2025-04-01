@@ -3,7 +3,7 @@
   "displayName": "Workspace",
   "author": "Fooxly <hello@fooxly.com> (https://developer.fooxly.com/)",
   "description": "A more focused view on your files",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "keywords": [
     "fooxly",
     "vscode",
@@ -25,25 +25,10 @@
     "url": "https://github.com/Fooxly/workspace.git"
   },
   "bugs": {
-    "url": "https://github.com/Fooxly/workspace",
+    "url": "https://github.com/Fooxly/workspace/issues",
     "email": "bugs@fooxly.com"
   },
   "license": "MIT",
-  "main": "./dist/extension.js",
-  "engines": {
-    "yarn": ">=1",
-    "node": ">=12",
-    "vscode": "^1.81.0"
-  },
-  "scripts": {
-    "package": "vsce package --yarn -o extension.vsix",
-    "vscode:prepublish": "yarn run prepackage",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "prepackage": "webpack --mode production --devtool hidden-source-map",
-    "lint": "eslint src --ext ts",
-    "update-translations": "npx @vscode/l10n-dev export -o ./l10n ./src"
-  },
   "publisher": "Fooxly",
   "icon": "assets/icon.png",
   "galleryBanner": {
@@ -57,6 +42,10 @@
   "activationEvents": [
     "onStartupFinished"
   ],
+  "main": "./dist/extension.js",
+  "engines": {
+    "vscode": "^1.81.0"
+  },
   "contributes": {
     "commands": [
       {
@@ -85,20 +74,20 @@
         "enablement": "!workspace:inFocusMode"
       }
     ],
-		"keybindings": [
+    "keybindings": [
       {
-				"command": "workspace.enableFocus",
-				"key": "shift+ctrl+\\",
-				"mac": "shift+cmd+\\",
+        "command": "workspace.enableFocus",
+        "key": "shift+ctrl+\\",
+        "mac": "shift+cmd+\\",
         "when": "!workspace:inFocusMode"
-			},
+      },
       {
-				"command": "workspace.disableFocus",
-				"key": "shift+ctrl+\\",
-				"mac": "shift+cmd+\\",
+        "command": "workspace.disableFocus",
+        "key": "shift+ctrl+\\",
+        "mac": "shift+cmd+\\",
         "when": "workspace:inFocusMode"
-			}
-		],
+      }
+    ],
     "menus": {
       "explorer/context": [
         {
@@ -179,23 +168,27 @@
       }
     }
   },
-  "devDependencies": {
-    "@types/mocha": "^10.0.1",
-    "@types/node": "16.x",
-    "@types/vscode": "^1.81.0",
-    "@typescript-eslint/eslint-plugin": "^6.4.1",
-    "@typescript-eslint/parser": "^6.4.1",
-    "@vscode/test-electron": "^2.3.4",
-    "eslint": "^8.47.0",
-    "glob": "^10.3.3",
-    "mocha": "^10.2.0",
-    "ts-loader": "^9.4.4",
-    "typescript": "^5.1.6",
-    "vsce": "^2.15.0",
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4"
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src"
   },
-  "dependencies": {
-    "minimatch": "^9.0.3"
+  "devDependencies": {
+    "@types/vscode": "^1.98.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "eslint": "^9.23.0",
+    "esbuild": "^0.25.1",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.8.2",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
   }
 }

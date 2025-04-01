@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.3.1] - 2025-04-01
+
+### Changed
+
+- Upgraded dependencies and project foundation
+
 ## [1.3.0] - 2023-08-29
 
 ### Added

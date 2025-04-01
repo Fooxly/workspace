@@ -1,0 +1,14 @@
+{
+  "Show hidden entries": "Toon verborgen items",
+  "Enable focus mode": "Focus mode activeren",
+  "You need to select at least one file": "Je moet minstens één bestand selecteren",
+  "You need to select at least one folder": "Je moet minstens één map selecteren",
+  "You cannot hide the root folder": "Je kunt de root map niet verbergen",
+  "The Fooxly Workspace extension can only be used within a workspace": "De Fooxly Workspace extensie kan alleen worden gebruikt binnen een workspace",
+  "The item \"{0}\" is already hidden by the pattern \"{1}\", Please resolve this conflict before hiding it with the pattern \"{2}\"": "Het item \"{0}\" is al verborgen door de patroon \"{1}\", los dit conflict op voor je bestanden probeert te verbergen met patroon \"{2}\"",
+  "Open settings.json": "settings.json openen",
+  "Delete Pattern": "Patroon verwijderen",
+  "Multiple items are already hidden by existing pattern(s) in your settings.json. Please resolve these conflicts before hiding them.": "Meerdere items zijn al verborgen door bestaande patroon(en) in je settings.json. Los deze conflicten op voordat je ze probeert te verbergen.",
+  "Delete Pattern(s)": "Patroon(en) verwijderen",
+  "This item is set to be hidden": "Dit item is ingesteld om verborgen te zijn"
+}

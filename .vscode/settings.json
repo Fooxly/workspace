@@ -1,8 +1,16 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "files.exclude": {
-        "out": true,
-        "dist": true
+        "out": false,
+        "dist": false,
+        "node_modules": false,
+        ".vscode": false,
+        "tsconfig.json": false,
+        "LICENSE": false,
+        "esbuild.js": false,
+        ".vscodeignore": false,
+        "CHANGELOG.md": false,
+        "eslint.config.mjs": false
     },
     "search.exclude": {
         "out": true, // set this to false to include "out" folder in search results
@@ -10,5 +18,10 @@
     },
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",
-    "workspace.isHidden": true
+    // File nesting
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+        "package.json": "package.nls.json,package.nls.*.json,package-lock.json"
+    },
 }
